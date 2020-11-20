@@ -37,7 +37,8 @@ public class Controller {
         loginView.addListentBtnLogin(new listentBtnLogin());
     }
     public void getUserOnline(){
-        send(new Request("getUserOnline",(Object)"he"));
+        String s = "he";
+        send(new Request("getUserOnline",(Object)s));
     }
     public class listentBtnLogin implements MouseListener{
 
@@ -50,16 +51,21 @@ public class Controller {
             //h.setLabel("hello");
 //            h.setVisible(true);
 //            h.setLabel("hello");
-            //openConnection(serverHost, serverPort);
+            openConnection(serverHost, serverPort);
             User user = loginView.getUser();
             
             send(new Request("login",(Object) user));
             s = receive();
             //loginView.showMessage(s);
             if(s.equals("thanh cong")){
-                loginView.dispose();
-                game = new Game();
-                getUserOnline();
+                try {
+                    loginView.dispose();
+                    game = new Game();
+                    oos.reset();
+                    getUserOnline();
+                } catch (IOException ex) {
+                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 
                 
             }
@@ -88,7 +94,7 @@ public class Controller {
     public String receive(){
         String res=null;
         try {
-            ois = new ObjectInputStream(socketClient.getInputStream());
+            
             res = (String) ois.readObject();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -106,14 +112,16 @@ public class Controller {
     public void openConnection(String serverHost, int port){
         try {
             socketClient = new Socket(serverHost, port);
+            this.oos = new ObjectOutputStream(socketClient.getOutputStream());
+            this.ois = new ObjectInputStream(socketClient.getInputStream());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
     public void send(Request request){
-        openConnection(serverHost, serverPort);
+        //openConnection(serverHost, serverPort);
         try {
-            this.oos = new ObjectOutputStream(socketClient.getOutputStream());
+            
             oos.writeObject(request);
             
         } catch (Exception ex) {
