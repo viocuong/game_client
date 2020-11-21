@@ -14,6 +14,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,15 +31,15 @@ public class Controller {
     private int serverPort=8888;
     private LoginView loginView;
     private Game game;
-    
+    private Map<String, Pair<User,Integer>> listPlayer;
     public Controller(){
         loginView = new LoginView();
         loginView.setVisible(true);
         loginView.addListentBtnLogin(new listentBtnLogin());
     }
     public void getUserOnline(){
-        String s = "he";
-        send(new Request("getUserOnline",(Object)s));
+        
+        send(new Request("getListPlayer"));
     }
     public class listentBtnLogin implements MouseListener{
 
@@ -57,13 +58,19 @@ public class Controller {
             send(new Request("login",(Object) user));
             s = receive();
             //loginView.showMessage(s);
-            if(s.equals("thanh cong")){
+            if(s.equals("success")){
                 try {
                     loginView.dispose();
                     game = new Game();
                     oos.reset();
                     getUserOnline();
+                    listPlayer =(Map<String, Pair<User,Integer>>) ois.readObject();
+                    System.out.println(listPlayer.size());
+                    showListPlayer();
+                    
                 } catch (IOException ex) {
+                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
                     Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
@@ -89,6 +96,12 @@ public class Controller {
         @Override
         public void mouseExited(MouseEvent me){
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+    }
+    public void showListPlayer(){
+       
+        for(Map.Entry<String, Pair<User,Integer>> player: listPlayer.entrySet()){
+            System.out.println(player.getKey()+" "+player.getValue().getKey().getUserName()+ " "+player.getValue().getValue());
         }
     }
     public String receive(){
