@@ -19,9 +19,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -38,6 +42,8 @@ public class Game extends javax.swing.JFrame {
     /**
      * Creates new form Game
      */
+    private ActionListener al;
+    private Set<JButton> listBtnPlayer;
     public Game() {
         initComponents();
         this.setVisible(true);
@@ -61,7 +67,7 @@ public class Game extends javax.swing.JFrame {
         private int status;
         private int width;
         private int height;
-        public componentBtnPlayer(int status, int width, int height){
+        public componentBtnPlayer(int status, int width, int height, int score){
             this.status = status;
             this.width = width;
             this.height = height;
@@ -81,15 +87,21 @@ public class Game extends javax.swing.JFrame {
             g2d.setColor(colorStatus);
             g2d.fillOval(width-60, 10, 20, 20);
             Image img = new ImageIcon(getClass().getResource("/Res/icons8-change-user-30.png")).getImage();
-            g2d.drawImage(img,20 ,11 , null);
+            g2d.drawImage(img,20 ,8 , null);
 //            g2d.setFont(font);
 //            g2d.drawString("hello", 30, 20);
+            g2d.setColor(new Color(255, 255, 51));
+            Font f = new Font(Font.SANS_SERIF,Font.CENTER_BASELINE,14);
+            g2d.drawString("100",20, 55);
         }
     }
     public void showMyAccount(User user){
         this.labelAccount.setText(user.getUserName());
         //JOptionPane.showMessageDialog(this, user.getScore());
         this.labelScore.setText(String.valueOf(user.getScore()));
+    }
+    public void setActionListener(ActionListener al){
+        this.al = al;
     }
     class PanelImage extends JPanel{
         private Image img;
@@ -120,14 +132,14 @@ public class Game extends javax.swing.JFrame {
         Font font  = new Font(Font.SANS_SERIF,Font.LAYOUT_LEFT_TO_RIGHT,20);
         Color btnColor = new Color(52, 30, 69);
         Color fontColor = new Color(242, 242, 242);
-        
+        listBtnPlayer = new HashSet<>();
         
         for(Map.Entry<String ,Pair<User,Integer>>  player: listPlayer.entrySet()){
             JButton btnPlayer = new JButton();
             
             btnPlayer.setForeground(fontColor);
             btnPlayer.setSize(new Dimension(w,60));
-            btnPlayer.add(new componentBtnPlayer(player.getValue().getValue(), w, h));
+            btnPlayer.add(new componentBtnPlayer(player.getValue().getValue(), w, h, player.getValue().getKey().getScore()));
             btnPlayer.setFont(font);
             btnPlayer.setBorder(null);
             btnPlayer.setBackground(btnColor);
@@ -138,10 +150,20 @@ public class Game extends javax.swing.JFrame {
                 public void mouseExited(MouseEvent e){
                     btnPlayer.setBackground(new Color(52, 30, 69));
                 }
-                
             });
             btnPlayer.setText(player.getValue().getKey().getUserName()+" ip:"+player.getKey());
+            btnPlayer.addActionListener(al);
+            
+            listBtnPlayer.add(btnPlayer);
+            
             jPanelListPlayer.add(btnPlayer);
+            
+        }
+    }
+    public void addListentBtnPlayer(ActionListener l){
+        for(JButton btn : listBtnPlayer){
+            //JOptionPane.showMessageDialog(this, btn.getText());
+            btn.addActionListener(l);
         }
     }
     /**

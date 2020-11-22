@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JButton;
 /**
  *
  * @author cuongnv
@@ -41,7 +42,6 @@ public class Controller {
         loginView.addListentBtnLogin(new listentBtnLogin());
     }
     public void getUserOnline(){
-        
         send(new Request("getListPlayer"));
     }
     public class listentBtnLogin implements ActionListener{
@@ -63,30 +63,36 @@ public class Controller {
             if(s.equals("success")){
                 try {
                     myAccount =(User) ois.readObject();
-                    
                     loginView.dispose();
                     game = new Game();
+                    game.setActionListener(new ListentBtnPlayer());
                     game.showMyAccount(myAccount);
                     oos.reset();
                     getUserOnline();
                     listPlayer =(Map<String, Pair<User,Integer>>) ois.readObject();
                     System.out.println(listPlayer.size());
-                    
-                    showListPlayer();
-                    
+                    showListPlayer();    
+                    //game.addListentBtnPlayer(new ListentBtnPlayer());
                 } catch (IOException ex) {
                     Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
-                
             }
             else loginView.showMessage(s);
             closeConnection();
         }
+    }
+    //xu ly su kien khi click vao nguoi choi muon thach dau
+    public class ListentBtnPlayer implements ActionListener{
 
-        
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            JButton btn = (JButton) ae.getSource();
+            System.out.println(btn.getText());
+            //System.out.println("fkegk");
+        }
     }
     public void showListPlayer(){ 
         game.showListPlayer(listPlayer);
@@ -100,7 +106,6 @@ public class Controller {
             ex.printStackTrace();
         }
         return res;
-        
     }
     public void closeConnection(){
         try {
@@ -121,9 +126,7 @@ public class Controller {
     public void send(Request request){
         //openConnection(serverHost, serverPort);
         try {
-            
             oos.writeObject(request);
-            
         } catch (Exception ex) {
             ex.printStackTrace();
         }
