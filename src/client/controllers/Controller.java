@@ -62,9 +62,11 @@ public class Controller {
             //loginView.showMessage(s);
             if(s.equals("success")){
                 try {
-                    myAccount = user;
+                    myAccount =(User) ois.readObject();
+                    
                     loginView.dispose();
                     game = new Game();
+                    game.showMyAccount(myAccount);
                     oos.reset();
                     getUserOnline();
                     listPlayer =(Map<String, Pair<User,Integer>>) ois.readObject();

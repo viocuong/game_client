@@ -9,6 +9,7 @@ import Models.com.Pair;
 import Models.com.User;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -44,6 +45,8 @@ public class Game extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }
     public void initComponentCustom(){
+        btnClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btnMinimize.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         jPanelListPlayer.setBackground(new Color(52, 30, 69,90));
         GridLayout gl = new GridLayout(8,1);
         gl.setHgap(20);
@@ -83,8 +86,10 @@ public class Game extends javax.swing.JFrame {
 //            g2d.drawString("hello", 30, 20);
         }
     }
-    public void showMyAccount(){
-        
+    public void showMyAccount(User user){
+        this.labelAccount.setText(user.getUserName());
+        //JOptionPane.showMessageDialog(this, user.getScore());
+        this.labelScore.setText(String.valueOf(user.getScore()));
     }
     class PanelImage extends JPanel{
         private Image img;
@@ -109,15 +114,14 @@ public class Game extends javax.swing.JFrame {
             g.drawImage(img,0, 0, null);
         }
     }
+    
     public void showListPlayer(Map<String, Pair<User, Integer>> listPlayer){
         int w = jPanelListPlayer.getWidth(), h = jPanelListPlayer.getHeight();
         Font font  = new Font(Font.SANS_SERIF,Font.LAYOUT_LEFT_TO_RIGHT,20);
         Color btnColor = new Color(52, 30, 69);
         Color fontColor = new Color(242, 242, 242);
         
-        for(Map.Entry<String, Pair<User, Integer>> p : listPlayer.entrySet()){
-            System.out.println(p.getKey() + " "+p.getValue().getKey().getUserName()+" "+p.getValue().getValue());
-        }
+        
         for(Map.Entry<String ,Pair<User,Integer>>  player: listPlayer.entrySet()){
             JButton btnPlayer = new JButton();
             
@@ -137,7 +141,6 @@ public class Game extends javax.swing.JFrame {
                 
             });
             btnPlayer.setText(player.getValue().getKey().getUserName()+" ip:"+player.getKey());
-            
             jPanelListPlayer.add(btnPlayer);
         }
     }
@@ -159,7 +162,7 @@ public class Game extends javax.swing.JFrame {
         labelAccount = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         labelScore = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        labelRanking = new javax.swing.JLabel();
         labelRank = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -216,13 +219,11 @@ public class Game extends javax.swing.JFrame {
 
         labelScore.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
         labelScore.setForeground(new java.awt.Color(254, 254, 254));
-        labelScore.setText("10");
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Res/icons8-rank.png"))); // NOI18N
+        labelRanking.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Res/icons8-rank.png"))); // NOI18N
 
         labelRank.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
         labelRank.setForeground(new java.awt.Color(254, 254, 254));
-        labelRank.setText("1");
 
         javax.swing.GroupLayout jPanelGameLayout = new javax.swing.GroupLayout(jPanelGame);
         jPanelGame.setLayout(jPanelGameLayout);
@@ -236,13 +237,13 @@ public class Game extends javax.swing.JFrame {
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanelGameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelScore, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(labelAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanelGameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(labelAccount, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+                            .addComponent(labelScore, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanelGameLayout.createSequentialGroup()
-                        .addComponent(jLabel6)
+                        .addComponent(labelRanking)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(labelRank, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(labelRank, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jPanelGameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelGameLayout.createSequentialGroup()
                         .addGap(182, 182, 182)
@@ -251,7 +252,7 @@ public class Game extends javax.swing.JFrame {
                     .addGroup(jPanelGameLayout.createSequentialGroup()
                         .addGap(166, 166, 166)
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 289, Short.MAX_VALUE)
                         .addComponent(btnMinimize, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -276,13 +277,10 @@ public class Game extends javax.swing.JFrame {
                         .addGroup(jPanelGameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(labelScore, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanelGameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelGameLayout.createSequentialGroup()
-                                .addGap(27, 27, 27)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanelGameLayout.createSequentialGroup()
-                                .addGap(37, 37, 37)
-                                .addComponent(labelRank)))
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanelGameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(labelRanking, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(labelRank, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jPanelListPlayer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
@@ -355,11 +353,11 @@ public class Game extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanelGame;
     private javax.swing.JPanel jPanelListPlayer;
     private javax.swing.JLabel labelAccount;
     private javax.swing.JLabel labelRank;
+    private javax.swing.JLabel labelRanking;
     private javax.swing.JLabel labelScore;
     // End of variables declaration//GEN-END:variables
 }
