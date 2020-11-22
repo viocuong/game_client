@@ -5,13 +5,19 @@
  */
 package client.view;
 
+import Models.com.Pair;
+import Models.com.User;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.Map;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -28,7 +34,38 @@ public class Game extends javax.swing.JFrame {
     public Game() {
         initComponents();
         this.setVisible(true);
+        initComponentCustom();
         setLocationRelativeTo(null);
+    }
+    public void initComponentCustom(){
+        jPanelListPlayer.setBackground(new Color(0,0,0,0));
+        jPanelGame.setSize(new Dimension(1209, 697));
+    }
+    class componentBtnPlayer extends JComponent{
+        private int status;
+        private int width;
+        private int height;
+        public componentBtnPlayer(int status, int width, int height){
+            this.status = status;
+            this.width = width;
+            this.height = height;
+        }
+        public void paint(Graphics g){
+            //super.paint(g);
+            Graphics2D g2d = (Graphics2D) g;
+            Color colorStatus = null;
+            if(status == 1) colorStatus = Color.GREEN;
+            else if(status ==2) colorStatus = Color.orange;
+            else colorStatus = Color.red;
+            g2d.setColor(colorStatus);
+            g2d.fillOval(width-60, 0, 20, 20);
+            
+            Image img = new ImageIcon(getClass().getResource("/Res/icons8-change-user-30.png")).getImage();
+            g2d.drawImage(img,11 ,11 , null);
+        }
+        protected void paintComponent(Graphics g){
+            
+        }
     }
     class PanelImage extends JPanel{
         private Image img;
@@ -51,7 +88,21 @@ public class Game extends javax.swing.JFrame {
 //            g2d.setPaint(gp);
 //            g2d.fillRect(0, 0, width, height);
             g.drawImage(img,0, 0, null);
-        } 
+        }
+    }
+    public void showListPlayer(Map<String, Pair<User, Integer>> listPlayer){
+        int w = jPanelListPlayer.getWidth(), h = jPanelListPlayer.getHeight();
+        Font font  = new Font(Font.SANS_SERIF,Font.BOLD,20);
+        for(Map.Entry<String ,Pair<User,Integer>>  player: listPlayer.entrySet()){
+            JButton btnPlayer = new JButton(player.getValue().getKey().getUserName()+" ip:"+player.getKey());
+            
+            btnPlayer.setSize(new Dimension(w,60));
+            btnPlayer.add(new componentBtnPlayer(player.getValue().getValue(), w, h));
+            
+            btnPlayer.setFont(font);
+            
+            jPanelListPlayer.add(btnPlayer);
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -62,18 +113,17 @@ public class Game extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanelGame = new PanelImage("background_game.png");
+        jPanelGame = new PanelImage("background_game_small.png");
         btnClose = new javax.swing.JLabel();
         btnMinimize = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jPanelListPlayer = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(1619, 890));
+        setPreferredSize(new java.awt.Dimension(1209, 697));
         setResizable(false);
 
-        jPanelGame.setPreferredSize(new java.awt.Dimension(1619, 890));
+        jPanelGame.setPreferredSize(new java.awt.Dimension(1209, 697));
 
         btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Res/icons8-close.png"))); // NOI18N
         btnClose.setText("    ");
@@ -96,33 +146,30 @@ public class Game extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setFont(new java.awt.Font("Monospaced", 0, 17)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Người chơi", "Trạng thái"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        javax.swing.GroupLayout jPanelListPlayerLayout = new javax.swing.GroupLayout(jPanelListPlayer);
+        jPanelListPlayer.setLayout(jPanelListPlayerLayout);
+        jPanelListPlayerLayout.setHorizontalGroup(
+            jPanelListPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 430, Short.MAX_VALUE)
+        );
+        jPanelListPlayerLayout.setVerticalGroup(
+            jPanelListPlayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 399, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout jPanelGameLayout = new javax.swing.GroupLayout(jPanelGame);
         jPanelGame.setLayout(jPanelGameLayout);
         jPanelGameLayout.setHorizontalGroup(
             jPanelGameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelGameLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 1113, Short.MAX_VALUE)
                 .addComponent(btnMinimize, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanelGameLayout.createSequentialGroup()
-                .addGap(503, 503, 503)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 585, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(531, Short.MAX_VALUE))
+                .addGap(389, 389, 389)
+                .addComponent(jPanelListPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelGameLayout.setVerticalGroup(
             jPanelGameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,9 +177,9 @@ public class Game extends javax.swing.JFrame {
                 .addGroup(jPanelGameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnClose)
                     .addComponent(btnMinimize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(195, 195, 195)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(217, 217, 217))
+                .addGap(63, 63, 63)
+                .addComponent(jPanelListPlayer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(380, 380, 380))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -204,7 +251,6 @@ public class Game extends javax.swing.JFrame {
     private javax.swing.JLabel btnClose;
     private javax.swing.JLabel btnMinimize;
     private javax.swing.JPanel jPanelGame;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JPanel jPanelListPlayer;
     // End of variables declaration//GEN-END:variables
 }

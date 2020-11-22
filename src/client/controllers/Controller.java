@@ -8,6 +8,8 @@ import Models.com.*;
 import java.net.Socket;
 import java.sql.*;
 import client.view.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.DataInputStream;
@@ -41,11 +43,10 @@ public class Controller {
         
         send(new Request("getListPlayer"));
     }
-    public class listentBtnLogin implements MouseListener{
+    public class listentBtnLogin implements ActionListener{
 
         @Override
-        public void mouseClicked(MouseEvent me){
-            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        public void actionPerformed(ActionEvent ae) {
             String s = null;
 //            loginView.dispose();
 //            Home h =new Home("hello  dww");
@@ -79,30 +80,11 @@ public class Controller {
             else loginView.showMessage(s);
             closeConnection();
         }
-        @Override
-        public void mousePressed(MouseEvent me){
-            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
 
-        @Override
-        public void mouseReleased(MouseEvent me){
-            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent me){
-            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-        @Override
-        public void mouseExited(MouseEvent me){
-            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
+        
     }
-    public void showListPlayer(){
-       
-        for(Map.Entry<String, Pair<User,Integer>> player: listPlayer.entrySet()){
-            System.out.println(player.getKey()+" "+player.getValue().getKey().getUserName()+ " "+player.getValue().getValue());
-        }
+    public void showListPlayer(){ 
+        game.showListPlayer(listPlayer);
     }
     public String receive(){
         String res=null;
