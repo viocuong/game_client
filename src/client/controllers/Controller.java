@@ -34,6 +34,7 @@ public class Controller {
     private LoginView loginView;
     private Game game;
     private Map<String, Pair<User,Integer>> listPlayer;
+    private User myAccount;
     public Controller(){
         loginView = new LoginView();
         loginView.setVisible(true);
@@ -61,12 +62,14 @@ public class Controller {
             //loginView.showMessage(s);
             if(s.equals("success")){
                 try {
+                    myAccount = user;
                     loginView.dispose();
                     game = new Game();
                     oos.reset();
                     getUserOnline();
                     listPlayer =(Map<String, Pair<User,Integer>>) ois.readObject();
                     System.out.println(listPlayer.size());
+                    
                     showListPlayer();
                     
                 } catch (IOException ex) {
