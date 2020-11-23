@@ -16,6 +16,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.DatagramSocket;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
@@ -36,10 +37,12 @@ public class Controller {
     private Game game;
     private Map<String, Pair<User,Integer>> listPlayer;
     private User myAccount;
+    private DatagramSocket clientUDP;
     public Controller(){
         loginView = new LoginView();
         loginView.setVisible(true);
         loginView.addListentBtnLogin(new listentBtnLogin());
+        //new updatePlayerOnline().start();
     }
     public void getUserOnline(){
         send(new Request("getListPlayer"));
@@ -81,6 +84,23 @@ public class Controller {
             }
             else loginView.showMessage(s);
             //closeConnection();
+        }
+    }
+    public class updatePlayerOnline extends Thread{
+        public updatePlayerOnline(){
+        }
+        public void run(){
+            openConnection(serverHost, serverPort);
+            while(true){
+                try {
+                    sleep(2000);
+                    getUserOnline();
+                    showListPlayer();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            
         }
     }
     //xu ly su kien khi click vao nguoi choi muon thach dau
@@ -131,6 +151,9 @@ public class Controller {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+    public void sendUDP(Request request){
+        
     }
    
 }
