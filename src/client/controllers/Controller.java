@@ -80,7 +80,7 @@ public class Controller {
                 }
             }
             else loginView.showMessage(s);
-            closeConnection();
+            //closeConnection();
         }
     }
     //xu ly su kien khi click vao nguoi choi muon thach dau
@@ -109,6 +109,7 @@ public class Controller {
     }
     public void closeConnection(){
         try {
+            System.out.println("close!");
             socketClient.close();
         } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);

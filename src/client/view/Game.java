@@ -67,10 +67,12 @@ public class Game extends javax.swing.JFrame {
         private int status;
         private int width;
         private int height;
+        private int score;
         public componentBtnPlayer(int status, int width, int height, int score){
             this.status = status;
             this.width = width;
             this.height = height;
+            this.score = score;
         }
         public void paint(Graphics g){
             //super.paint(g);
@@ -92,7 +94,7 @@ public class Game extends javax.swing.JFrame {
 //            g2d.drawString("hello", 30, 20);
             g2d.setColor(new Color(255, 255, 51));
             Font f = new Font(Font.SANS_SERIF,Font.CENTER_BASELINE,14);
-            g2d.drawString("100",20, 55);
+            g2d.drawString(String.valueOf(this.score),20, 55);
         }
     }
     public void showMyAccount(User user){
