@@ -41,6 +41,7 @@ public class Game extends javax.swing.JFrame {
     /**
      * Creates new form Game
      */
+    private int d = 0;
     private ActionListener al;
     private Set<JButton> listBtnPlayer;
     public Game() {
@@ -62,12 +63,13 @@ public class Game extends javax.swing.JFrame {
         jPanelGame.setSize(new Dimension(1209, 697));
         //jPanelInfoAccount.setBackground(new Color(52, 30, 69,50));
     }
-    class componentBtnPlayer extends JComponent{
+    public class componentBtnPlayer extends JComponent{
         private int status;
         private int width;
         private int height;
         private int score;
         public componentBtnPlayer(int status, int width, int height, int score){
+            
             this.status = status;
             this.width = width;
             this.height = height;
@@ -88,6 +90,7 @@ public class Game extends javax.swing.JFrame {
             g2d.setColor(colorStatus);
             g2d.fillOval(width-60, 10, 20, 20);
             Image img = new ImageIcon(getClass().getResource("/Res/icons8-change-user-30.png")).getImage();
+            //JOptionPane.showMessageDialog(this, img.getSource());
             g2d.drawImage(img,20 ,8 , null);
 //            g2d.setFont(font);
 //            g2d.drawString("hello", 30, 20);

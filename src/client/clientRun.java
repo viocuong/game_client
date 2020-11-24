@@ -13,6 +13,7 @@ import client.controllers.Controller;
  */
 public class clientRun {
     public static void main(String[] args) {
-        var con = new Controller();
+        Thread run = new Thread(new Controller());
+        run.start();
     }
 }

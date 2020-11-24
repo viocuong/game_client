@@ -19,6 +19,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import static java.lang.Thread.sleep;
 import java.net.DatagramSocket;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,42 +31,33 @@ import javax.swing.JButton;
  *
  * @author cuongnv
  */
-public class Controller {
+public class Controller implements Runnable {
     private Socket socketClient;
     private String serverHost="localhost";
     private Connection con;
     private ObjectInputStream ois;
-    //private ObjectOutputStream oos;
     private ObjectOutputStream oos;
     private int serverPort=8888;
     private LoginView loginView;
     private Game game;
     private Map<String, Pair<User,Integer>> listPlayer = new HashMap<>();
     private User myAccount;
-    //private DatagramSocket clientUDP;
+    private boolean is_login = false;
     public Controller(){
-        
         loginView = new LoginView();
         loginView.setVisible(true);
         loginView.addListentBtnLogin(new listentBtnLogin());
-        //openConnection(serverHost, serverPort);
         openConnection(serverHost, serverPort);
-//        Receiving t = new Receiving();
-//        t.setDaemon(true);
-//        t.start();
-        //new updatePlayerOnline().start();
     }
-    class Receiving extends Thread{
-        public Receiving(){
-        }
-        @Override
-        public void run(){
-            try {
-                while(true){                   
+    public void run(){
+        try {
+            if(is_login == true){
+                while(true){  
+                    
                     Request respond = (Request)ois.readObject();
                     switch(respond.getRequestName()){
                         case "login":
-                            
+                            System.out.println("login");
                             handleLogin(respond);
                             break;
                         case "sendListPlayer":
@@ -73,11 +65,11 @@ public class Controller {
                             break;
                     }   
                 }
-            } catch (IOException ex) {
-                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } catch (IOException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     public void getUserOnline(){
@@ -88,49 +80,55 @@ public class Controller {
     }
     public void handleLogin(Request res){
         try{
-            if(res.getObject() instanceof User){
-                myAccount =(User) res.getObject();
-                loginView.dispose();
-                game = new Game();
-                game.setActionListener(new ListentBtnPlayer());
-                game.showMyAccount(myAccount);
-
-                getUserOnline();
-                //Request res1 = (Request)ois.readObject();
-                        //listPlayer =(Map<String, Pair<User,Integer>>) res.getObject();
-                //handleListPlayerOnline(res1);
-                //game.showListPlayer(listPlayer);
-                //game.addListentBtnPlayer(new ListentBtnPlayer());
-            }
-            else loginView.showMessage("Đăng nhập thất bại");
+        if(res.getObject() instanceof User){
+            myAccount =(User) res.getObject();
+            loginView.dispose();
+            game = new Game();
+            game.setActionListener(new ListentBtnPlayer());
+            game.showMyAccount(myAccount);
+            
+            getUserOnline();
+//            Request res1 = (Request)ois.readObject();
+//                    //listPlayer =(Map<String, Pair<User,Integer>>) res.getObject();
+//            handleListPlayerOnline(res1);
+            //game.showListPlayer(listPlayer);
+            //game.addListentBtnPlayer(new ListentBtnPlayer());
+        }
+        else loginView.showMessage("Đăng nhập thất bại");
         }
         catch(Exception ex){
+            
         }
     }
     public class listentBtnLogin implements ActionListener{
 
         @Override
         public void actionPerformed(ActionEvent ae) { 
-            new Receiving().start();
-            //String s = null;
-//            loginView.dispose();
-//            Home h =new Home("hello  dww");
-            //h.setLabel("hello");
-//            h.setVisible(true);
-//            h.setLabel("hello");
-            //openConnection(serverHost, serverPort);
-            User user = loginView.getUser();
-            
+            String s = null;
+            User user = loginView.getUser();      
             send(new Request("login",(Object) user));
-            Request res=null;
-//            try {
-//                res = (Request)ois.readObject();
-//            } catch (IOException ex) {
-//                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-//            } catch (ClassNotFoundException ex) {
-//                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-            handleLogin(res);
+            int i =2;
+            while((i--)>0){                   
+                try {
+                    Request respond = null;
+                
+                    respond = (Request)ois.readObject();
+                
+                    switch(respond.getRequestName()){
+                        case "login":
+                            System.out.println("login");
+                            handleLogin(respond);
+                            break;
+                        case "sendListPlayer":
+                            handleListPlayerOnline(respond);
+                            break;
+                    }   
+                } catch (IOException ex) {
+                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
             
             //closeConnection();
         }
@@ -150,7 +148,6 @@ public class Controller {
                     Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            
         }
     }
     //xu ly su kien khi click vao nguoi choi muon thach dau
@@ -208,6 +205,7 @@ public class Controller {
         
         try {
             oos.writeObject(request);
+            oos.flush();
             
             //oos = new ObjectOutputStream(socketClient.getOutputStream());
         } catch (IOException ex) {
