@@ -63,12 +63,12 @@ public class Game extends javax.swing.JFrame {
         jPanelGame.setSize(new Dimension(1209, 697));
         //jPanelInfoAccount.setBackground(new Color(52, 30, 69,50));
     }
-    public class componentBtnPlayer extends JComponent{
+    private class componentBtnPlayer extends JComponent{
         private int status;
         private int width;
         private int height;
         private int score;
-        public componentBtnPlayer(int status, int width, int height, int score){
+        private componentBtnPlayer(int status, int width, int height, int score){
             
             this.status = status;
             this.width = width;
@@ -76,10 +76,11 @@ public class Game extends javax.swing.JFrame {
             this.score = score;
         }
         public void paint(Graphics g){
-            //super.paint(g);
+            
             Color fontColor = new Color(242, 242, 242);
             Font font  = new Font(Font.SANS_SERIF,Font.LAYOUT_LEFT_TO_RIGHT,20);
             Graphics2D g2d = (Graphics2D) g;
+            //super.paint(g2d);
 //            g2d.setColor(new Color(52, 30, 69));
 //            g2d.fillRoundRect(0, 0, width, height, 20, 20);
             
@@ -98,6 +99,7 @@ public class Game extends javax.swing.JFrame {
             Font f = new Font(Font.SANS_SERIF,Font.CENTER_BASELINE,14);
             g2d.drawString(String.valueOf(this.score),20, 55);
         }
+        
     }
     public void showMyAccount(User user){
         this.labelAccount.setText(user.getUserName());
@@ -145,6 +147,7 @@ public class Game extends javax.swing.JFrame {
             btnPlayer.setSize(new Dimension(w,60));
             componentBtnPlayer comp = new componentBtnPlayer(player.getValue().getValue(), w, h, player.getValue().getKey().getScore());
             //JOptionPane.showMessageDialog(this, comp.getFont());
+            comp.setSize(new Dimension(w, 60));
             btnPlayer.add(comp);
             btnPlayer.setFont(font);
             btnPlayer.setBorder(null);

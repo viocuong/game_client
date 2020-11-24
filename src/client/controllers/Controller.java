@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-// Bug dị : khai bao ois trước oos lỗi :)
+// Bug khai bao ois trước oos lỗi
 package client.controllers;
 import Models.com.Pair;
 import Models.com.Request;
@@ -42,16 +42,21 @@ public class Controller implements Runnable {
     private Game game;
     private Map<String, Pair<User,Integer>> listPlayer = new HashMap<>();
     private User myAccount;
+    private boolean is_updating = false;
     public Controller(){
         loginView = new LoginView();
         loginView.setVisible(true);
         loginView.addListentBtnLogin(new listentBtnLogin());
         openConnection(serverHost, serverPort);
-        //new updatePlayerOnline().start();
+        new updatePlayerOnline().start();
+    }
+    public synchronized Map<String, Pair<User, Integer>> getlistPlayer(){
+        return this.listPlayer;
     }
     public void run(){
         while(true){
             try {
+                if(is_updating==true) continue;
                 Request respond =(Request)ois.readObject();
                 switch(respond.getRequestName()){
                     case "login":
@@ -63,13 +68,14 @@ public class Controller implements Runnable {
                         break;   
                 }
             } catch (IOException ex) {
-                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+                //Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
     public void getUserOnline(){
+        
         Request req = new Request("getListPlayer");
         send(req);
     }
@@ -97,27 +103,6 @@ public class Controller implements Runnable {
             
             User user = loginView.getUser();      
             send(new Request("login",(Object) user));
-//            int i =2;
-//            while((i--)>0){                   
-//                try {
-//                    Request respond = null;
-//                    respond = (Request)ois.readObject();
-//                
-//                    switch(respond.getRequestName()){
-//                        case "login":
-//                            System.out.println("login");
-//                            handleLogin(respond);
-//                            break;
-//                        case "sendListPlayer":
-//                            handleListPlayerOnline(respond);
-//                            break;
-//                    }   
-//                } catch (IOException ex) {
-//                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-//                } catch (ClassNotFoundException ex) {
-//                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
         }
     }
     public class updatePlayerOnline extends Thread{
@@ -128,7 +113,8 @@ public class Controller implements Runnable {
             
             while(true){
                 try {
-                    sleep(2000);
+                    
+                    sleep(5000);
                     getUserOnline();
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
@@ -146,6 +132,8 @@ public class Controller implements Runnable {
         }
     }
     public void handleListPlayerOnline(Request res){
+        if(res.getObject() == null) return;
+        Map<String, Pair<User, Integer>> listPlayer=getlistPlayer();
         listPlayer =(Map<String, Pair<User,Integer>>) res.getObject();
         for(Map.Entry<String, Pair<User, Integer>> p : listPlayer.entrySet()){
             System.out.println(p.getKey()+" "+p.getValue().getKey().getUserName()+" "+p.getValue().getValue()+" "+p.getValue().getKey().getScore());
