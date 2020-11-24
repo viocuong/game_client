@@ -42,41 +42,36 @@ public class Controller implements Runnable {
     private Game game;
     private Map<String, Pair<User,Integer>> listPlayer = new HashMap<>();
     private User myAccount;
-    private boolean is_login = false;
     public Controller(){
         loginView = new LoginView();
         loginView.setVisible(true);
         loginView.addListentBtnLogin(new listentBtnLogin());
         openConnection(serverHost, serverPort);
+        //new updatePlayerOnline().start();
     }
     public void run(){
-        try {
-            if(is_login == true){
-                while(true){  
-                    
-                    Request respond = (Request)ois.readObject();
-                    switch(respond.getRequestName()){
-                        case "login":
-                            System.out.println("login");
-                            handleLogin(respond);
-                            break;
-                        case "sendListPlayer":
-                            handleListPlayerOnline(respond);
-                            break;
-                    }   
+        while(true){
+            try {
+                Request respond =(Request)ois.readObject();
+                switch(respond.getRequestName()){
+                    case "login":
+                        System.out.println("login");
+                        handleLogin(respond);
+                        break;
+                    case "sendListPlayer":
+                        handleListPlayerOnline(respond);
+                        break;   
                 }
+            } catch (IOException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (IOException ex) {
-                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     public void getUserOnline(){
         Request req = new Request("getListPlayer");
-        //System.out.println(req.getRequestName());
         send(req);
-        //send(new Request("getListPlayer"));
     }
     public void handleLogin(Request res){
         try{
@@ -86,13 +81,7 @@ public class Controller implements Runnable {
             game = new Game();
             game.setActionListener(new ListentBtnPlayer());
             game.showMyAccount(myAccount);
-            
             getUserOnline();
-//            Request res1 = (Request)ois.readObject();
-//                    //listPlayer =(Map<String, Pair<User,Integer>>) res.getObject();
-//            handleListPlayerOnline(res1);
-            //game.showListPlayer(listPlayer);
-            //game.addListentBtnPlayer(new ListentBtnPlayer());
         }
         else loginView.showMessage("Đăng nhập thất bại");
         }
@@ -105,32 +94,30 @@ public class Controller implements Runnable {
         @Override
         public void actionPerformed(ActionEvent ae) { 
             String s = null;
+            
             User user = loginView.getUser();      
             send(new Request("login",(Object) user));
-            int i =2;
-            while((i--)>0){                   
-                try {
-                    Request respond = null;
-                
-                    respond = (Request)ois.readObject();
-                
-                    switch(respond.getRequestName()){
-                        case "login":
-                            System.out.println("login");
-                            handleLogin(respond);
-                            break;
-                        case "sendListPlayer":
-                            handleListPlayerOnline(respond);
-                            break;
-                    }   
-                } catch (IOException ex) {
-                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            
-            //closeConnection();
+//            int i =2;
+//            while((i--)>0){                   
+//                try {
+//                    Request respond = null;
+//                    respond = (Request)ois.readObject();
+//                
+//                    switch(respond.getRequestName()){
+//                        case "login":
+//                            System.out.println("login");
+//                            handleLogin(respond);
+//                            break;
+//                        case "sendListPlayer":
+//                            handleListPlayerOnline(respond);
+//                            break;
+//                    }   
+//                } catch (IOException ex) {
+//                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+//                } catch (ClassNotFoundException ex) {
+//                    Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
         }
     }
     public class updatePlayerOnline extends Thread{
@@ -143,7 +130,6 @@ public class Controller implements Runnable {
                 try {
                     sleep(2000);
                     getUserOnline();
-                    showListPlayer();
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -155,10 +141,8 @@ public class Controller implements Runnable {
 
         @Override
         public void actionPerformed(ActionEvent ae) {
-            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             JButton btn = (JButton) ae.getSource();
             System.out.println(btn.getText());
-            //System.out.println("fkegk");
         }
     }
     public void handleListPlayerOnline(Request res){
@@ -201,13 +185,9 @@ public class Controller implements Runnable {
         }
     }
     public void send(Request request){
-        //openConnection(serverHost, serverPort);
-        
         try {
             oos.writeObject(request);
             oos.flush();
-            
-            //oos = new ObjectOutputStream(socketClient.getOutputStream());
         } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -217,8 +197,4 @@ public class Controller implements Runnable {
             ex.printStackTrace();
         }
     }
-    public void sendUDP(Request request){
-        
-    }
-   
 }

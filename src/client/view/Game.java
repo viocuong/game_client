@@ -41,7 +41,7 @@ public class Game extends javax.swing.JFrame {
     /**
      * Creates new form Game
      */
-    private int d = 0;
+    private boolean is_setComponent = false;
     private ActionListener al;
     private Set<JButton> listBtnPlayer;
     public Game() {
@@ -143,7 +143,9 @@ public class Game extends javax.swing.JFrame {
             //JOptionPane.showMessageDialog(this, player.getKey()+" "+player.getValue().getKey().getUserName()+" "+player.getValue().getValue()+" "+player.getValue().getKey().getScore());
             btnPlayer.setForeground(fontColor);
             btnPlayer.setSize(new Dimension(w,60));
-            btnPlayer.add(new componentBtnPlayer(player.getValue().getValue(), w, h, player.getValue().getKey().getScore()));
+            componentBtnPlayer comp = new componentBtnPlayer(player.getValue().getValue(), w, h, player.getValue().getKey().getScore());
+            //JOptionPane.showMessageDialog(this, comp.getFont());
+            btnPlayer.add(comp);
             btnPlayer.setFont(font);
             btnPlayer.setBorder(null);
             btnPlayer.setBackground(btnColor);
@@ -163,6 +165,7 @@ public class Game extends javax.swing.JFrame {
             jPanelListPlayer.add(btnPlayer);
             
         }
+        is_setComponent = true;
     }
     public void addListentBtnPlayer(ActionListener l){
         for(JButton btn : listBtnPlayer){
