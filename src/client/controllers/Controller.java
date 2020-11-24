@@ -50,9 +50,9 @@ public class Controller {
         loginView.addListentBtnLogin(new listentBtnLogin());
         //openConnection(serverHost, serverPort);
         openConnection(serverHost, serverPort);
-        Receiving t = new Receiving();
-        t.setDaemon(true);
-        t.start();
+//        Receiving t = new Receiving();
+//        t.setDaemon(true);
+//        t.start();
         //new updatePlayerOnline().start();
     }
     class Receiving extends Thread{
@@ -65,13 +65,13 @@ public class Controller {
                     Request respond = (Request)ois.readObject();
                     switch(respond.getRequestName()){
                         case "login":
+                            
                             handleLogin(respond);
                             break;
-                        case "sendListPlayerOnline":
+                        case "sendListPlayer":
                             handleListPlayerOnline(respond);
                             break;
-                    }
-                    
+                    }   
                 }
             } catch (IOException ex) {
                     Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
@@ -81,42 +81,57 @@ public class Controller {
         }
     }
     public void getUserOnline(){
-        Request req = new Request("getListPlayerOnline");
+        Request req = new Request("getListPlayer");
         //System.out.println(req.getRequestName());
         send(req);
+        //send(new Request("getListPlayer"));
     }
     public void handleLogin(Request res){
         try{
-        if(res.getObject() instanceof User){
-            myAccount =(User) res.getObject();
-            loginView.dispose();
-            game = new Game();
-            game.setActionListener(new ListentBtnPlayer());
-            game.showMyAccount(myAccount);
-            
-            getUserOnline();
-            //game.showListPlayer(listPlayer);
-            //game.addListentBtnPlayer(new ListentBtnPlayer());
-        }
-        else loginView.showMessage("Đăng nhập thất bại");
+            if(res.getObject() instanceof User){
+                myAccount =(User) res.getObject();
+                loginView.dispose();
+                game = new Game();
+                game.setActionListener(new ListentBtnPlayer());
+                game.showMyAccount(myAccount);
+
+                getUserOnline();
+                //Request res1 = (Request)ois.readObject();
+                        //listPlayer =(Map<String, Pair<User,Integer>>) res.getObject();
+                //handleListPlayerOnline(res1);
+                //game.showListPlayer(listPlayer);
+                //game.addListentBtnPlayer(new ListentBtnPlayer());
+            }
+            else loginView.showMessage("Đăng nhập thất bại");
         }
         catch(Exception ex){
-            
         }
     }
     public class listentBtnLogin implements ActionListener{
 
         @Override
-        public void actionPerformed(ActionEvent ae) {
-           
+        public void actionPerformed(ActionEvent ae) { 
+            new Receiving().start();
+            //String s = null;
+//            loginView.dispose();
+//            Home h =new Home("hello  dww");
+            //h.setLabel("hello");
+//            h.setVisible(true);
+//            h.setLabel("hello");
             //openConnection(serverHost, serverPort);
             User user = loginView.getUser();
             
-            Request req = new Request("login",(Object)user);
-            send(req);
+            send(new Request("login",(Object) user));
+            Request res=null;
+//            try {
+//                res = (Request)ois.readObject();
+//            } catch (IOException ex) {
+//                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (ClassNotFoundException ex) {
+//                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+            handleLogin(res);
             
-            //getUserOnline();
-            //loginView.showMessage(s);
             //closeConnection();
         }
     }
