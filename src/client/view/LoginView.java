@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package client.view;
-import Models.com.User;
+import Models.com.*;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.GradientPaint;
