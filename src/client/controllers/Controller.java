@@ -223,7 +223,7 @@ public class Controller implements Runnable {
         public void actionPerformed(ActionEvent ae) {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             if(this.action.equals("accept")){
-                
+                sendRefuse(ip);
             }
             m.dispose();
         }   
