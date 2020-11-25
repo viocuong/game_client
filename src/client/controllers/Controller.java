@@ -68,7 +68,6 @@ public class Controller implements Runnable {
                         break;
                     case "sendListPlayer":
                         handleListPlayerOnline(respond);
-                        
                         break; 
                     case "challange":
                         //System.out.println("da ----nhan loi moi thach dau tu user 1");
@@ -87,6 +86,7 @@ public class Controller implements Runnable {
     }
     public void acceptInvite(Request res){
         User user = (User) res.getObject();
+        System.out.println(user.getUserName());
        
         //System.out.println("User co ip "+ip+" muon thach dau");
         showMessage(user.getUserName()+" muốn thách đấu bạn, chiến?" , "accept",user.getIp());
