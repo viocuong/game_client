@@ -86,9 +86,10 @@ public class Controller implements Runnable {
         }
     }
     public void acceptInvite(Request res){
-        String ip = (String) res.getObject();
+        User user = (User) res.getObject();
+       
         //System.out.println("User co ip "+ip+" muon thach dau");
-        showMessage(listPlayer.get(ip).getKey().getUserName()+" muốn thách đấu bạn, chiến?" , "accept",ip);
+        showMessage(user.getUserName()+" muốn thách đấu bạn, chiến?" , "accept",user.getIp());
         
     }
     public void getUserOnline(){
