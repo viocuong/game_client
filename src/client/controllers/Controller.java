@@ -71,8 +71,11 @@ public class Controller implements Runnable {
                         
                         break; 
                     case "challange":
-                        System.out.println("da ----nhan loi moi thach dau tu user 1");
+                        //System.out.println("da ----nhan loi moi thach dau tu user 1");
                         acceptInvite(respond);
+                        break;
+                    case "refuse":
+                        handleRefuse(respond);
                         break;
                 }
             } catch (IOException ex) {
@@ -84,8 +87,8 @@ public class Controller implements Runnable {
     }
     public void acceptInvite(Request res){
         String ip = (String) res.getObject();
-        System.out.println("User co ip "+ip+" muon thach dau");
-        //showMessage(listPlayer.get(ip).getKey().getUserName()+" muốn thách đấu bạn,bạn có muốn chiến không" , "accept",);
+        //System.out.println("User co ip "+ip+" muon thach dau");
+        showMessage(listPlayer.get(ip).getKey().getUserName()+" muốn thách đấu bạn, chiến?" , "accept",ip);
         
     }
     public void getUserOnline(){
@@ -156,7 +159,7 @@ public class Controller implements Runnable {
     }
     public void showMessage(String content, String action, String ip){
         MessageDialog m = new MessageDialog(content);
-        m.addListenerBtnCancel(new ListenActionCancel(m));
+        m.addListenerBtnCancel(new ListenActionCancel(m,action,ip));
         m.addListentBtnOk(new ListenActionOk(m,action,ip));
         m.setVisible(true);
     }
@@ -188,11 +191,19 @@ public class Controller implements Runnable {
                     this.m.dispose();
                     break;
                 case "accept":
-                    System.out.println("chap nhan dau voi "+this.user.getUserName());
+                    //System.out.println("chap nhan dau voi "+this.user.getUserName());
+                    this.m.dispose();
                     break;
-                    
+                case "refuse":
+                    this.m.dispose();
+                    break;
             }
         }
+    }
+   
+    public void handleRefuse(Request res){
+        String userName = (String) res.getObject();
+        showMessage(userName+" đã từ chối, chắc do sợ bạn đó:)", "refuse", userName);
     }
     public void sendMatch(String ip){
         Request req = new Request("match", (Object)ip);
@@ -200,12 +211,19 @@ public class Controller implements Runnable {
     }
     public class ListenActionCancel implements ActionListener{
         private MessageDialog m ;
-        public ListenActionCancel(MessageDialog m){
+        private String action;
+        private String ip;
+        public ListenActionCancel(MessageDialog m, String action, String ip){
             this.m = m;
+            this.action = action;
+            this.ip = ip;
         }
         @Override
         public void actionPerformed(ActionEvent ae) {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            if(this.action.equals("accept")){
+                
+            }
             m.dispose();
         }   
     }
@@ -223,6 +241,11 @@ public class Controller implements Runnable {
         catch(Exception ex){
             return;
         }
+    }
+    //tu choi yeu cau thach dau
+    public void sendRefuse(String ip){
+        Request req = new Request("refuse",(Object)ip);
+        send(req);
     }
     public void showListPlayer(){ 
         game.showListPlayer(listPlayer);
