@@ -58,7 +58,6 @@ public class Controller implements Runnable {
     public void run(){
         while(true){
             try {
-                
                 Request respond =(Request)ois.readObject();
                 if(respond.getObject() == null) continue;
                 switch(respond.getRequestName()){
