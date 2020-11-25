@@ -82,8 +82,9 @@ public class Controller implements Runnable {
         }
     }
     public void acceptInvite(Request res){
-        User user= (User) res.getObject();
-        showMessage(user.getUserName()+" muốn thách đấu bạn,bạn có muốn chiến không" , "accept",user);
+        String ip = (String) res.getObject();
+        System.out.println("User co ip "+ip+" muon thach dau");
+        //showMessage(listPlayer.get(ip).getKey().getUserName()+" muốn thách đấu bạn,bạn có muốn chiến không" , "accept",);
         
     }
     public void getUserOnline(){
@@ -142,17 +143,20 @@ public class Controller implements Runnable {
             
             String[] sp = btn.getText().split(" ");
             System.out.println(myAccount.getUserName());
+            String[] str = sp[1].split(":");
+            String ip = str[1];
+            System.out.println(ip);
             if(myAccount.getUserName().equals(sp[0])){
                 showMessage("Bạn không thể thách đấu với chính mình", "close",null);
             }
-            else showMessage("Bạn có muốn gửi lời thách đấu tới "+ sp[0],"challange", myAccount);
+            else showMessage("Bạn có muốn gửi lời thách đấu tới "+ sp[0],"challange",ip);
             System.out.println(btn.getText());
         }
     }
-    public void showMessage(String content, String action, User user){
+    public void showMessage(String content, String action, String ip){
         MessageDialog m = new MessageDialog(content);
         m.addListenerBtnCancel(new ListenActionCancel(m));
-        m.addListentBtnOk(new ListenActionOk(m,action,user));
+        m.addListentBtnOk(new ListenActionOk(m,action,ip));
         m.setVisible(true);
     }
     public class ListenActionOk implements ActionListener{
@@ -178,17 +182,18 @@ public class Controller implements Runnable {
                     this.m.dispose();
                     break;
                 case "challange":
-                    sendMatch(this.user);
+                    sendMatch(this.ip);
                     this.m.dispose();
                     break;
                 case "accept":
                     System.out.println("chap nhan dau voi "+this.user.getUserName());
                     break;
+                    
             }
         }
     }
-    public void sendMatch(User user){
-        Request res = new Request("match", (Object)user);
+    public void sendMatch(String ip){
+        Request res = new Request("match", (Object)ip);
         send(res);
     }
     public class ListenActionCancel implements ActionListener{
