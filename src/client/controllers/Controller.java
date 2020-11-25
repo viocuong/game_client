@@ -71,6 +71,7 @@ public class Controller implements Runnable {
                         
                         break; 
                     case "challange":
+                        System.out.println("da ----nhan loi moi thach dau tu user 1");
                         acceptInvite(respond);
                         break;
                 }
@@ -150,7 +151,7 @@ public class Controller implements Runnable {
                 showMessage("Bạn không thể thách đấu với chính mình", "close",null);
             }
             else showMessage("Bạn có muốn gửi lời thách đấu tới "+ sp[0],"challange",ip);
-            System.out.println(btn.getText());
+            //System.out.println(btn.getText());
         }
     }
     public void showMessage(String content, String action, String ip){
@@ -182,6 +183,7 @@ public class Controller implements Runnable {
                     this.m.dispose();
                     break;
                 case "challange":
+                    
                     sendMatch(this.ip);
                     this.m.dispose();
                     break;
@@ -193,8 +195,8 @@ public class Controller implements Runnable {
         }
     }
     public void sendMatch(String ip){
-        Request res = new Request("match", (Object)ip);
-        send(res);
+        Request req = new Request("match", (Object)ip);
+        send(req);
     }
     public class ListenActionCancel implements ActionListener{
         private MessageDialog m ;
@@ -212,9 +214,9 @@ public class Controller implements Runnable {
             if(res.getObject() == null) return;
             Map<String, Pair<User, Integer>> listPlayer=getlistPlayer();
             listPlayer =(Map<String, Pair<User,Integer>>) res.getObject();
-            for(Map.Entry<String, Pair<User, Integer>> p : listPlayer.entrySet()){
-                System.out.println(p.getKey()+" "+p.getValue().getKey().getUserName()+" "+p.getValue().getValue()+" "+p.getValue().getKey().getScore());
-            }
+//            for(Map.Entry<String, Pair<User, Integer>> p : listPlayer.entrySet()){
+//                System.out.println(p.getKey()+" "+p.getValue().getKey().getUserName()+" "+p.getValue().getValue()+" "+p.getValue().getKey().getScore());
+//            }
             game.showListPlayer(listPlayer); 
             
         }
