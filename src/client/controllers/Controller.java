@@ -42,13 +42,14 @@ public class Controller implements Runnable {
     private Game game;
     private Map<String, Pair<User,Integer>> listPlayer = new HashMap<>();
     private User myAccount;
-    private boolean is_updating = false;
+    
     public Controller(){
         loginView = new LoginView();
         loginView.setVisible(true);
         loginView.addListentBtnLogin(new listentBtnLogin());
         openConnection(serverHost, serverPort);
-        new updatePlayerOnline().start();
+        Thread threadUpdate = new Thread(new updatePlayerOnline());
+        threadUpdate.start();
     }
     public synchronized Map<String, Pair<User, Integer>> getlistPlayer(){
         return this.listPlayer;
@@ -56,15 +57,17 @@ public class Controller implements Runnable {
     public void run(){
         while(true){
             try {
-                if(is_updating==true) continue;
+                
                 Request respond =(Request)ois.readObject();
+                if(respond.getObject() == null) continue;
                 switch(respond.getRequestName()){
                     case "login":
-                        System.out.println("login");
+                       
                         handleLogin(respond);
                         break;
                     case "sendListPlayer":
                         handleListPlayerOnline(respond);
+                        
                         break;   
                 }
             } catch (IOException ex) {
@@ -105,7 +108,7 @@ public class Controller implements Runnable {
             send(new Request("login",(Object) user));
         }
     }
-    public class updatePlayerOnline extends Thread{
+    public class updatePlayerOnline implements Runnable{
         public updatePlayerOnline(){
             //openConnection(serverHost, serverPort);
         }
@@ -114,7 +117,7 @@ public class Controller implements Runnable {
             while(true){
                 try {
                     
-                    sleep(5000);
+                    sleep(10000);
                     getUserOnline();
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
@@ -132,13 +135,19 @@ public class Controller implements Runnable {
         }
     }
     public void handleListPlayerOnline(Request res){
-        if(res.getObject() == null) return;
-        Map<String, Pair<User, Integer>> listPlayer=getlistPlayer();
-        listPlayer =(Map<String, Pair<User,Integer>>) res.getObject();
-        for(Map.Entry<String, Pair<User, Integer>> p : listPlayer.entrySet()){
-            System.out.println(p.getKey()+" "+p.getValue().getKey().getUserName()+" "+p.getValue().getValue()+" "+p.getValue().getKey().getScore());
+        try{
+            if(res.getObject() == null) return;
+            Map<String, Pair<User, Integer>> listPlayer=getlistPlayer();
+            listPlayer =(Map<String, Pair<User,Integer>>) res.getObject();
+            for(Map.Entry<String, Pair<User, Integer>> p : listPlayer.entrySet()){
+                System.out.println(p.getKey()+" "+p.getValue().getKey().getUserName()+" "+p.getValue().getValue()+" "+p.getValue().getKey().getScore());
+            }
+            game.showListPlayer(listPlayer); 
+            
+            }
+        catch(Exception ex){
+            return;
         }
-        game.showListPlayer(listPlayer); 
     }
     public void showListPlayer(){ 
         game.showListPlayer(listPlayer);

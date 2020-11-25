@@ -5,7 +5,8 @@
  */
 package client.view;
 
-import Models.com.*;
+import Models.com.Pair;
+import Models.com.User;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -41,9 +42,8 @@ public class Game extends javax.swing.JFrame {
     /**
      * Creates new form Game
      */
-    private boolean is_setComponent = false;
     private ActionListener al;
-    private Set<JButton> listBtnPlayer;
+    private ArrayList<JButton> listBtnPlayer;
     public Game() {
         initComponents();
         this.setVisible(true);
@@ -63,24 +63,37 @@ public class Game extends javax.swing.JFrame {
         jPanelGame.setSize(new Dimension(1209, 697));
         //jPanelInfoAccount.setBackground(new Color(52, 30, 69,50));
     }
-    private class componentBtnPlayer extends JComponent{
+    public void initJpanelPlayers(){
+        int w = jPanelGame.getWidth(), h =jPanelGame.getHeight();
+        
+        
+        //jPanelListPlayer = new JPanel();
+        jPanelListPlayer.setBounds(w/3, 50, w/3,600 );
+        jPanelListPlayer.setBackground(new Color(52, 30, 69,90));
+        GridLayout gl = new GridLayout(8,1);
+        gl.setHgap(20);
+        gl.setVgap(20);
+        jPanelListPlayer.setLayout(gl);
+        jPanelListPlayer.setSize(430,500);
+        jPanelListPlayer.setPreferredSize(new Dimension(430,500));
+        //jPanelGame.add(jPanelListPlayer);
+    }
+    class componentBtnPlayer extends JComponent{
         private int status;
         private int width;
         private int height;
         private int score;
-        private componentBtnPlayer(int status, int width, int height, int score){
-            
+        public componentBtnPlayer(int status, int width, int height, int score){
             this.status = status;
             this.width = width;
             this.height = height;
             this.score = score;
         }
         public void paint(Graphics g){
-            
+            //super.paint(g);
             Color fontColor = new Color(242, 242, 242);
             Font font  = new Font(Font.SANS_SERIF,Font.LAYOUT_LEFT_TO_RIGHT,20);
             Graphics2D g2d = (Graphics2D) g;
-            //super.paint(g2d);
 //            g2d.setColor(new Color(52, 30, 69));
 //            g2d.fillRoundRect(0, 0, width, height, 20, 20);
             
@@ -91,7 +104,6 @@ public class Game extends javax.swing.JFrame {
             g2d.setColor(colorStatus);
             g2d.fillOval(width-60, 10, 20, 20);
             Image img = new ImageIcon(getClass().getResource("/Res/icons8-change-user-30.png")).getImage();
-            //JOptionPane.showMessageDialog(this, img.getSource());
             g2d.drawImage(img,20 ,8 , null);
 //            g2d.setFont(font);
 //            g2d.drawString("hello", 30, 20);
@@ -99,7 +111,6 @@ public class Game extends javax.swing.JFrame {
             Font f = new Font(Font.SANS_SERIF,Font.CENTER_BASELINE,14);
             g2d.drawString(String.valueOf(this.score),20, 55);
         }
-        
     }
     public void showMyAccount(User user){
         this.labelAccount.setText(user.getUserName());
@@ -132,22 +143,38 @@ public class Game extends javax.swing.JFrame {
             g.drawImage(img,0, 0, null);
         }
     }
-    
+    public void deleteBtnPlayer(){
+        for(JButton b:listBtnPlayer ){
+            jPanelListPlayer.remove(b);
+        }
+        listBtnPlayer.clear();
+    }
     public void showListPlayer(Map<String, Pair<User, Integer>> listPlayer){
         int w = jPanelListPlayer.getWidth(), h = jPanelListPlayer.getHeight();
+        jPanelListPlayer.removeAll();
+        jPanelListPlayer.revalidate();
+        jPanelListPlayer.repaint();
+        initJpanelPlayers();
+       
+        
+        //deleteBtnPlayer();
+        //jPanelListPlayer.repaint();
         Font font  = new Font(Font.SANS_SERIF,Font.LAYOUT_LEFT_TO_RIGHT,20);
         Color btnColor = new Color(52, 30, 69);
         Color fontColor = new Color(242, 242, 242);
-        listBtnPlayer = new HashSet<>();
-        //JOptionPane.showMessageDialog(this, listPlayer.size());
+        listBtnPlayer = new ArrayList<>();
+        int y = 0;
         for(Map.Entry<String ,Pair<User,Integer>>  player: listPlayer.entrySet()){
             JButton btnPlayer = new JButton();
-            //JOptionPane.showMessageDialog(this, player.getKey()+" "+player.getValue().getKey().getUserName()+" "+player.getValue().getValue()+" "+player.getValue().getKey().getScore());
+           
             btnPlayer.setForeground(fontColor);
             btnPlayer.setSize(new Dimension(w,60));
+            btnPlayer.setLocation(0, y);
+            btnPlayer.setBounds(0, y, w, 60);
             componentBtnPlayer comp = new componentBtnPlayer(player.getValue().getValue(), w, h, player.getValue().getKey().getScore());
-            //JOptionPane.showMessageDialog(this, comp.getFont());
             comp.setSize(new Dimension(w, 60));
+            btnPlayer.setPreferredSize(new Dimension(w, 60));
+            comp.setPreferredSize(new Dimension(w, 60));
             btnPlayer.add(comp);
             btnPlayer.setFont(font);
             btnPlayer.setBorder(null);
@@ -166,9 +193,9 @@ public class Game extends javax.swing.JFrame {
             listBtnPlayer.add(btnPlayer);
             
             jPanelListPlayer.add(btnPlayer);
-            
+            y+=65;
         }
-        is_setComponent = true;
+        //JOptionPane.showMessageDialog(this,listBtnPlayer.size());
     }
     public void addListentBtnPlayer(ActionListener l){
         for(JButton btn : listBtnPlayer){
@@ -370,6 +397,7 @@ public class Game extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Game.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
