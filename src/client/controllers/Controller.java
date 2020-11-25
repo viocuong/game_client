@@ -60,6 +60,7 @@ public class Controller implements Runnable {
             try {
                 Request respond =(Request)ois.readObject();
                 if(respond.getObject() == null) continue;
+                System.out.println(respond.getRequestName());
                 switch(respond.getRequestName()){
                     case "login":
                        
@@ -258,7 +259,7 @@ public class Controller implements Runnable {
     public void send(Request request){
         try {
             oos.writeObject(request);
-            oos.flush();
+            //oos.flush();
         } catch (IOException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
