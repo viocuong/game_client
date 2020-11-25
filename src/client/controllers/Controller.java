@@ -70,7 +70,7 @@ public class Controller implements Runnable {
                         handleListPlayerOnline(respond);
                         
                         break; 
-                    case "senAcceptInvite":
+                    case "challange":
                         acceptInvite(respond);
                         break;
                 }
@@ -83,7 +83,7 @@ public class Controller implements Runnable {
     }
     public void acceptInvite(Request res){
         User user= (User) res.getObject();
-        showMessage(user.getPassWord()+" muốn thách đấy bạn,bạn có muốn chiến không" , "accept",null);
+        showMessage(user.getUserName()+" muốn thách đấu bạn,bạn có muốn chiến không" , "accept",user);
         
     }
     public void getUserOnline(){
@@ -145,14 +145,14 @@ public class Controller implements Runnable {
             if(myAccount.getUserName().equals(sp[0])){
                 showMessage("Bạn không thể thách đấu với chính mình", "close",null);
             }
-            else showMessage("Bạn có đồng ý thách đấu với "+ sp[0],"challange", sp[1].split(":")[1]);
+            else showMessage("Bạn có muốn gửi lời thách đấu tới "+ sp[0],"challange", myAccount);
             System.out.println(btn.getText());
         }
     }
-    public void showMessage(String content, String action, String ip){
+    public void showMessage(String content, String action, User user){
         MessageDialog m = new MessageDialog(content);
         m.addListenerBtnCancel(new ListenActionCancel(m));
-        m.addListentBtnOk(new ListenActionOk(m,action,ip));
+        m.addListentBtnOk(new ListenActionOk(m,action,user));
         m.setVisible(true);
     }
     public class ListenActionOk implements ActionListener{
@@ -178,7 +178,7 @@ public class Controller implements Runnable {
                     this.m.dispose();
                     break;
                 case "challange":
-                    sendMatch(this.ip);
+                    sendMatch(this.user);
                     this.m.dispose();
                     break;
                 case "accept":
@@ -187,8 +187,8 @@ public class Controller implements Runnable {
             }
         }
     }
-    public void sendMatch(String ip){
-        Request res = new Request("match", (Object)ip);
+    public void sendMatch(User user){
+        Request res = new Request("match", (Object)user);
         send(res);
     }
     public class ListenActionCancel implements ActionListener{
