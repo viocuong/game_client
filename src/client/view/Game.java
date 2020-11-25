@@ -155,10 +155,6 @@ public class Game extends javax.swing.JFrame {
         jPanelListPlayer.revalidate();
         jPanelListPlayer.repaint();
         initJpanelPlayers();
-       
-        
-        //deleteBtnPlayer();
-        //jPanelListPlayer.repaint();
         Font font  = new Font(Font.SANS_SERIF,Font.LAYOUT_LEFT_TO_RIGHT,20);
         Color btnColor = new Color(52, 30, 69);
         Color fontColor = new Color(242, 242, 242);

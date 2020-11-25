@@ -49,6 +49,7 @@ public class Controller implements Runnable {
         loginView.addListentBtnLogin(new listentBtnLogin());
         openConnection(serverHost, serverPort);
         Thread threadUpdate = new Thread(new updatePlayerOnline());
+        threadUpdate.setDaemon(true);
         threadUpdate.start();
     }
     public synchronized Map<String, Pair<User, Integer>> getlistPlayer(){
@@ -68,7 +69,10 @@ public class Controller implements Runnable {
                     case "sendListPlayer":
                         handleListPlayerOnline(respond);
                         
-                        break;   
+                        break; 
+                    case "senAcceptInvite":
+                        acceptInvite(respond);
+                        break;
                 }
             } catch (IOException ex) {
                 //Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
@@ -76,6 +80,11 @@ public class Controller implements Runnable {
                 Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    public void acceptInvite(Request res){
+        User user= (User) res.getObject();
+        showMessage(user.getPassWord()+" muốn thách đấy bạn,bạn có muốn chiến không" , "accept",null);
+        
     }
     public void getUserOnline(){
         
@@ -116,7 +125,6 @@ public class Controller implements Runnable {
             
             while(true){
                 try {
-                    
                     sleep(10000);
                     getUserOnline();
                 } catch (InterruptedException ex) {
@@ -131,8 +139,68 @@ public class Controller implements Runnable {
         @Override
         public void actionPerformed(ActionEvent ae) {
             JButton btn = (JButton) ae.getSource();
+            
+            String[] sp = btn.getText().split(" ");
+            System.out.println(myAccount.getUserName());
+            if(myAccount.getUserName().equals(sp[0])){
+                showMessage("Bạn không thể thách đấu với chính mình", "close",null);
+            }
+            else showMessage("Bạn có đồng ý thách đấu với "+ sp[0],"challange", sp[1].split(":")[1]);
             System.out.println(btn.getText());
         }
+    }
+    public void showMessage(String content, String action, String ip){
+        MessageDialog m = new MessageDialog(content);
+        m.addListenerBtnCancel(new ListenActionCancel(m));
+        m.addListentBtnOk(new ListenActionOk(m,action,ip));
+        m.setVisible(true);
+    }
+    public class ListenActionOk implements ActionListener{
+        private MessageDialog m ;
+        private String action;
+        private String ip;
+        private User user;
+        public ListenActionOk(MessageDialog m, String action, String ip){
+            this.m = m;
+            this.action = action;
+            this.ip = ip;
+        }
+        public ListenActionOk(MessageDialog m, String action, User user){
+            this.m = m;
+            this.user = user;
+            this.action = action;
+        }
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            switch(this.action){
+                case "close":
+                    this.m.dispose();
+                    break;
+                case "challange":
+                    sendMatch(this.ip);
+                    this.m.dispose();
+                    break;
+                case "accept":
+                    System.out.println("chap nhan dau voi "+this.user.getUserName());
+                    break;
+            }
+        }
+    }
+    public void sendMatch(String ip){
+        Request res = new Request("match", (Object)ip);
+        send(res);
+    }
+    public class ListenActionCancel implements ActionListener{
+        private MessageDialog m ;
+        public ListenActionCancel(MessageDialog m){
+            this.m = m;
+        }
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            m.dispose();
+        }   
     }
     public void handleListPlayerOnline(Request res){
         try{
@@ -144,7 +212,7 @@ public class Controller implements Runnable {
             }
             game.showListPlayer(listPlayer); 
             
-            }
+        }
         catch(Exception ex){
             return;
         }
