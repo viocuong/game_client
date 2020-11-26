@@ -46,6 +46,8 @@ public class QuestionsForm extends javax.swing.JFrame implements ActionListener{
 
     public void initCustom() {
         tick = new Tick("tick.png",panelListAns.getWidth(),panelListAns.getHeight()-20);
+        tick.setPreferredSize(new Dimension(panelListAns.getWidth(),panelListAns.getHeight()-20));
+        tick.setSize(panelListAns.getWidth(),panelListAns.getHeight()-20);
         this.width = getWidth();
         this.height = getHeight();
         btnNext.setBackground(new Color(255, 178, 0));
@@ -128,7 +130,7 @@ public class QuestionsForm extends javax.swing.JFrame implements ActionListener{
         }
         public void paint(Graphics g){
             Graphics2D g2d = (Graphics2D) g;
-            g2d.drawImage(this.image,20,h/3,null);
+            g2d.drawImage(image,5,5,null);
             
         }
     }
