@@ -22,6 +22,8 @@ public class VS extends javax.swing.JFrame {
      */
     public VS(String user1, String user2) {
         initComponents();
+        labelUser1.setText(user1);
+        labelUser2.setText(user2);
         setLocationRelativeTo(null);
     }
     class panelCustom extends JPanel {

@@ -81,6 +81,10 @@
       </Layout>
       <SubComponents>
         <Container class="javax.swing.JPanel" name="panelTop">
+          <Events>
+            <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="panelTopMouseDragged"/>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="panelTopMousePressed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JPanel()"/>
             <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="panelTop.setBackground(new Color(245, 162, 93));"/>

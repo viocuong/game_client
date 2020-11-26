@@ -29,11 +29,13 @@ public class QuestionsForm extends javax.swing.JFrame implements ActionListener{
     /**
      * Creates new form QuestionsForm
      */
+    private int m,n;
     private int cur =0;
     private int width;
     private int height;
     private int[] myAns = new int[10];
     private ArrayList<Question> questions;
+    private Tick tick;
 
     public QuestionsForm() {
         initComponents();
@@ -42,6 +44,7 @@ public class QuestionsForm extends javax.swing.JFrame implements ActionListener{
     }
 
     public void initCustom() {
+        tick = new Tick();
         this.width = getWidth();
         this.height = getHeight();
         btnNext.setBackground(new Color(255, 178, 0));
@@ -84,22 +87,77 @@ public class QuestionsForm extends javax.swing.JFrame implements ActionListener{
             g.drawImage(image, 0, 0, this);
         }
     }
+//    class componentBtnAns extends JComponent{
+//        private int width;
+//        private int height;
+//        public componentBtnAns(int width, int height){
+//            this.width = width;
+//            this.height = height;
+//        }
+//        public void paint(Graphics g){
+//            //super.paint(g);
+//            Color fontColor = new Color(242, 242, 242);
+//            //Font font  = new Font(Font.SANS_SERIF,Font.LAYOUT_LEFT_TO_RIGHT,28);
+//            Graphics2D g2d = (Graphics2D) g;
+////            g2d.setColor(new Color(52, 30, 69));
+////            g2d.fillRoundRect(0, 0, width, height, 20, 20);
+//            
+//            Color colorStatus = null;
+//            if(status == 1) colorStatus = Color.GREEN;
+//            else if(status ==2) colorStatus = Color.orange;
+//            else colorStatus = Color.red;
+//            g2d.setColor(colorStatus);
+//            g2d.fillOval(width-60, 10, 20, 20);
+//            Image img = new ImageIcon(getClass().getResource("/Res/icons8-change-user-30.png")).getImage();
+//            g2d.drawImage(img,20 ,8 , null);
+////            g2d.setFont(font);
+////            g2d.drawString("hello", 30, 20);
+//            g2d.setColor(new Color(255, 255, 51));
+//            Font f = new Font(Font.SANS_SERIF,Font.CENTER_BASELINE,14);
+//            g2d.drawString(String.valueOf(this.score),20, 55);
+//        }
+//    }
+    class Tick extends JComponent{
+        private Image image;
+        private int w,h;
+        public void Tick(String img, int w, int h){
+            image = new ImageIcon(getClass().getResource("/Res/"+img)).getImage();
+            this.w = w;
+            this.h = h;
+        }
+        public void paint(Graphics g){
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.drawImage(this.image,20,h/3,null);
+            
+        }
+    }
     class BtnAnsCustom extends JComponent{
         public BtnAnsCustom(){
             
         }
     }
-    public JButton createBtn(String s, int i){
+    public JButton createBtn(String s, int i, JButton[] btns){
         int num = this.cur;
         JButton res = new JButton();
-        Font font = new Font(Font.SANS_SERIF, Font.BOLD,16);
+        Font font = new Font(Font.SANS_SERIF, Font.BOLD,30);
         res.setForeground(new Color(254,254,254));
         res.setText(s);
         res.setName(String.valueOf(i));
+        res.setBorder(null);
+        res.setBackground(new Color(45, 64, 89,150));
         res.addActionListener((ae) -> {
             myAns[num]=i;
+            resetTick(res, num, i,btns);
         });
         return res;
+    }
+    public void resetTick(JButton btn, int cur, int i,JButton[] btns){
+        for(int idx = 0; idx <4; idx++){
+            if(idx == i){
+                btns[i].add(this.tick);
+            }
+            else btns[i].remove(tick);
+        }
     }
     public void showQuestionI(Question q){
         int w = panelListAns.getWidth(), h=panelListAns.getHeight();
@@ -108,7 +166,7 @@ public class QuestionsForm extends javax.swing.JFrame implements ActionListener{
         ArrayList<String> listAns = q.getListAns();
         JButton[] btnAns = new JButton[4];
         for(int idx = 0; idx <4; idx++){
-            btnAns[idx] = createBtn(listAns.get(idx),idx);
+            btnAns[idx] = createBtn(listAns.get(idx),idx,btnAns);
         }
         int locationH = 0;
         int vertical =h/4;
@@ -116,7 +174,7 @@ public class QuestionsForm extends javax.swing.JFrame implements ActionListener{
             btnAns[idx].setSize(w,vertical-20);
             btnAns[idx].setPreferredSize(new Dimension(w,vertical-20));
             btnAns[idx].setLocation(0, locationH);
-            locationH+=(vertical+20);
+            locationH+=(vertical);
             panelListAns.add(btnAns[idx]);
         }
         
@@ -152,6 +210,16 @@ public class QuestionsForm extends javax.swing.JFrame implements ActionListener{
         setResizable(false);
 
         panelTop.setBackground(new Color(245, 162, 93));
+        panelTop.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                panelTopMouseDragged(evt);
+            }
+        });
+        panelTop.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelTopMousePressed(evt);
+            }
+        });
 
         iconAlarm.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Res/icon_alarm.png"))); // NOI18N
 
@@ -237,6 +305,18 @@ public class QuestionsForm extends javax.swing.JFrame implements ActionListener{
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void panelTopMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelTopMousePressed
+        // TODO add your handling code here:
+        m=evt.getX();
+        n=evt.getY();
+    }//GEN-LAST:event_panelTopMousePressed
+
+    private void panelTopMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelTopMouseDragged
+        int x=evt.getXOnScreen();
+        int y=evt.getYOnScreen();
+        this.setLocation(x-m, y-n);
+    }//GEN-LAST:event_panelTopMouseDragged
 
     /**
      * @param args the command line arguments
