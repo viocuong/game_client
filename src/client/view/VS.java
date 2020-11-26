@@ -64,15 +64,17 @@ public class VS extends javax.swing.JFrame {
         labelUser1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
+        setResizable(false);
 
         labelUser2.setFont(new java.awt.Font("TlwgTypewriter", 3, 36)); // NOI18N
         labelUser2.setForeground(new java.awt.Color(254, 254, 254));
-        labelUser2.setText("thangnv");
+        labelUser2.setText(" ");
 
         labelUser1.setFont(new java.awt.Font("TlwgTypewriter", 3, 36)); // NOI18N
         labelUser1.setForeground(new java.awt.Color(254, 254, 254));
         labelUser1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelUser1.setText("cuongnv");
+        labelUser1.setText("     ");
 
         javax.swing.GroupLayout panelMainLayout = new javax.swing.GroupLayout(panelMain);
         panelMain.setLayout(panelMainLayout);

@@ -94,15 +94,17 @@ public class Controller implements Runnable {
     }
     public void showQuestion(Request res){
         try {
+            //Đối thủ
             User u = (User) res.getObject2();
+            System.out.println(u.getUserName());
             VS vs = new VS(myAccount.getUserName(), u.getUserName());
             vs.setVisible(true);
             Thread.sleep(3000);
             vs.dispose();
             ArrayList<Question> listQuestion = (ArrayList<Question>)res.getObject();
-            for(Question q: listQuestion){
-                System.out.println(q.getListAns()+" "+q.getQuestion()+" "+q.getCorrectAns());
-            }
+            QuestionsForm questionF = new QuestionsForm();
+            questionF.setVisible(true);
+            questionF.showQuestion(listQuestion);
         } catch (InterruptedException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -110,7 +112,7 @@ public class Controller implements Runnable {
     }
     public void acceptInvite(Request res){
         User user = (User) res.getObject();
-        System.out.println(user.getUserName());
+        //System.out.println(user.getUserName());
        
         //System.out.println("User co ip "+ip+" muon thach dau");
         showMessage(user.getUserName()+" muốn thách đấu bạn, chiến?" , "accept",user.getIp());

@@ -12,22 +12,56 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import java.awt.Color;
+import java.util.ArrayList;
+import Models.com.*;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 
 /**
  *
  * @author cuongnv
  */
-public class QuestionsForm extends javax.swing.JFrame {
+public class QuestionsForm extends javax.swing.JFrame implements ActionListener{
 
     /**
      * Creates new form QuestionsForm
      */
-    
+    private int cur =0;
+    private int width;
+    private int height;
+    private int[] myAns = new int[10];
+    private ArrayList<Question> questions;
+
     public QuestionsForm() {
         initComponents();
+        initCustom();
         setLocationRelativeTo(null);
     }
 
+    public void initCustom() {
+        this.width = getWidth();
+        this.height = getHeight();
+        btnNext.setBackground(new Color(255, 178, 0));
+        btnNext.setBorder(null);
+        btnNext.addActionListener(this);
+        panelListAns.setBackground(new Color(0, 0, 0, 0));
+        
+        //panelListAns.add(new PanelAnsCustom(width,height));
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        cur++;
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(cur<10) showQuestion(this.questions);
+        else submitAns();
+    }
+    public void submitAns(){
+        
+    }
     class PanelCustom extends JPanel {
 
         private String img;
@@ -44,15 +78,58 @@ public class QuestionsForm extends javax.swing.JFrame {
             setMinimumSize(size);
             setMaximumSize(size);
             this.setLayout(null);
-           
-
         }
-
         protected void paintComponent(Graphics g) {
             //Graphics2D g2d = (Graphics2D) g;
             g.drawImage(image, 0, 0, this);
         }
     }
+    class BtnAnsCustom extends JComponent{
+        public BtnAnsCustom(){
+            
+        }
+    }
+    public JButton createBtn(String s, int i){
+        int num = this.cur;
+        JButton res = new JButton();
+        Font font = new Font(Font.SANS_SERIF, Font.BOLD,16);
+        res.setForeground(new Color(254,254,254));
+        res.setText(s);
+        res.setName(String.valueOf(i));
+        res.addActionListener((ae) -> {
+            myAns[num]=i;
+        });
+        return res;
+    }
+    public void showQuestionI(Question q){
+        int w = panelListAns.getWidth(), h=panelListAns.getHeight();
+        panelListAns.removeAll();
+        question.setText(q.getQuestion());
+        ArrayList<String> listAns = q.getListAns();
+        JButton[] btnAns = new JButton[4];
+        for(int idx = 0; idx <4; idx++){
+            btnAns[idx] = createBtn(listAns.get(idx),idx);
+        }
+        int locationH = 0;
+        int vertical =h/4;
+        for(int idx =0 ;idx < 4; idx++){
+            btnAns[idx].setSize(w,vertical-20);
+            btnAns[idx].setPreferredSize(new Dimension(w,vertical-20));
+            btnAns[idx].setLocation(0, locationH);
+            locationH+=(vertical+20);
+            panelListAns.add(btnAns[idx]);
+        }
+        
+    }
+    public void showQuestion(ArrayList<Question> questions) {
+        this.questions = questions;
+        
+        if(cur <10){
+            showQuestionI(questions.get(this.cur));
+            
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -66,12 +143,15 @@ public class QuestionsForm extends javax.swing.JFrame {
         panelMain = new PanelCustom("background_question.jpeg");
         panelTop = new javax.swing.JPanel();
         iconAlarm = new javax.swing.JLabel();
+        panelListAns = new javax.swing.JPanel();
+        btnNext = new javax.swing.JButton();
+        question = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
         setResizable(false);
 
-        panelTop.setBackground(new Color(40, 171, 185));
+        panelTop.setBackground(new Color(245, 162, 93));
 
         iconAlarm.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Res/icon_alarm.png"))); // NOI18N
 
@@ -82,7 +162,7 @@ public class QuestionsForm extends javax.swing.JFrame {
             .addGroup(panelTopLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(iconAlarm, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(622, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelTopLayout.setVerticalGroup(
             panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -92,24 +172,63 @@ public class QuestionsForm extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        javax.swing.GroupLayout panelListAnsLayout = new javax.swing.GroupLayout(panelListAns);
+        panelListAns.setLayout(panelListAnsLayout);
+        panelListAnsLayout.setHorizontalGroup(
+            panelListAnsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 504, Short.MAX_VALUE)
+        );
+        panelListAnsLayout.setVerticalGroup(
+            panelListAnsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 480, Short.MAX_VALUE)
+        );
+
+        btnNext.setFont(new java.awt.Font("Monospaced", 3, 24)); // NOI18N
+        btnNext.setForeground(new java.awt.Color(254, 254, 254));
+        btnNext.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Res/icons8-next.png"))); // NOI18N
+        btnNext.setText("Câu tiếp");
+        btnNext.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        question.setFont(new java.awt.Font("TlwgMono", 1, 18)); // NOI18N
+        question.setForeground(new java.awt.Color(254, 242, 242));
+
         javax.swing.GroupLayout panelMainLayout = new javax.swing.GroupLayout(panelMain);
         panelMain.setLayout(panelMainLayout);
         panelMainLayout.setHorizontalGroup(
             panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelTop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMainLayout.createSequentialGroup()
+                .addContainerGap(35, Short.MAX_VALUE)
+                .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMainLayout.createSequentialGroup()
+                        .addComponent(panelListAns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMainLayout.createSequentialGroup()
+                        .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21))))
+            .addGroup(panelMainLayout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addComponent(question, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         panelMainLayout.setVerticalGroup(
             panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMainLayout.createSequentialGroup()
                 .addComponent(panelTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 757, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(question, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(panelListAns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,8 +274,11 @@ public class QuestionsForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnNext;
     private javax.swing.JLabel iconAlarm;
+    private javax.swing.JPanel panelListAns;
     private javax.swing.JPanel panelMain;
     private javax.swing.JPanel panelTop;
+    private javax.swing.JLabel question;
     // End of variables declaration//GEN-END:variables
 }
