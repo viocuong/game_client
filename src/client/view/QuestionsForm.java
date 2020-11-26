@@ -19,6 +19,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -44,7 +45,7 @@ public class QuestionsForm extends javax.swing.JFrame implements ActionListener{
     }
 
     public void initCustom() {
-        tick = new Tick();
+        tick = new Tick("tick.png",panelListAns.getWidth(),panelListAns.getHeight()-20);
         this.width = getWidth();
         this.height = getHeight();
         btnNext.setBackground(new Color(255, 178, 0));
@@ -120,7 +121,7 @@ public class QuestionsForm extends javax.swing.JFrame implements ActionListener{
     class Tick extends JComponent{
         private Image image;
         private int w,h;
-        public void Tick(String img, int w, int h){
+        public Tick(String img, int w, int h){
             image = new ImageIcon(getClass().getResource("/Res/"+img)).getImage();
             this.w = w;
             this.h = h;
@@ -148,6 +149,7 @@ public class QuestionsForm extends javax.swing.JFrame implements ActionListener{
         res.addActionListener((ae) -> {
             myAns[num]=i;
             resetTick(res, num, i,btns);
+            JOptionPane.showMessageDialog(this, myAns[num]);
         });
         return res;
     }
@@ -162,6 +164,8 @@ public class QuestionsForm extends javax.swing.JFrame implements ActionListener{
     public void showQuestionI(Question q){
         int w = panelListAns.getWidth(), h=panelListAns.getHeight();
         panelListAns.removeAll();
+        panelListAns.repaint();
+        panelListAns.revalidate();
         question.setText(q.getQuestion());
         ArrayList<String> listAns = q.getListAns();
         JButton[] btnAns = new JButton[4];
