@@ -201,7 +201,12 @@ public class Controller implements Runnable {
             }
         }
     }
-   
+    // chấp nhận lời thách đấu, gửi thông tin ip người thách đấu lên server;
+    public void acceptChellange(String ip){
+        Request req = new Request("acceptChallange",(Object)ip);
+        send(req);
+        
+    }
     public void handleRefuse(Request res){
         String userName = (String) res.getObject();
         showMessage(userName+" đã từ chối, chắc do sợ bạn đó:)", "refuse", userName);
