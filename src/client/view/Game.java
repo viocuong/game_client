@@ -82,8 +82,8 @@ public class Game extends javax.swing.JFrame {
         private int status;
         private int width;
         private int height;
-        private int score;
-        public componentBtnPlayer(int status, int width, int height, int score){
+        private float score;
+        public componentBtnPlayer(int status, int width, int height, float score){
             this.status = status;
             this.width = width;
             this.height = height;
@@ -162,7 +162,6 @@ public class Game extends javax.swing.JFrame {
         int y = 0;
         for(Map.Entry<String ,Pair<User,Integer>>  player: listPlayer.entrySet()){
             JButton btnPlayer = new JButton();
-           
             btnPlayer.setForeground(fontColor);
             btnPlayer.setSize(new Dimension(w,60));
             btnPlayer.setLocation(0, y);
@@ -183,6 +182,7 @@ public class Game extends javax.swing.JFrame {
                     btnPlayer.setBackground(new Color(52, 30, 69));
                 }
             });
+            btnPlayer.setName((String.valueOf(player.getValue().getValue())));
             btnPlayer.setText(player.getValue().getKey().getUserName()+" ip:"+player.getKey());
             btnPlayer.addActionListener(al);
             

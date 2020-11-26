@@ -62,22 +62,25 @@ public class Controller implements Runnable {
             try {
                 Request respond =(Request)ois.readObject();
                 if(respond.getObject() == null) continue;
-                System.out.println(respond.getRequestName());
                 switch(respond.getRequestName()){
+                    //Nhận kết quả login trả về từ server
                     case "login":
-                       
                         handleLogin(respond);
                         break;
+                    //Nhận danh sách người dùng từ server trả về
                     case "sendListPlayer":
                         handleListPlayerOnline(respond);
                         break; 
+                    //Nhận lời thách đấu
                     case "challange":
                         //System.out.println("da ----nhan loi moi thach dau tu user 1");
                         acceptInvite(respond);
                         break;
+                    //Nhận từ chối thách đấu của đối thủ
                     case "refuse":
                         handleRefuse(respond);
                         break;
+                    //Nhận danh sách câu hỏi
                     case "sendListQuestion":
                         showQuestion(respond);
                         break;
@@ -90,7 +93,19 @@ public class Controller implements Runnable {
         }
     }
     public void showQuestion(Request res){
-        ArrayList<Question> listQuestion = (ArrayList<Question>)res.getObject();
+        try {
+            User u = (User) res.getObject2();
+            VS vs = new VS(myAccount.getUserName(), u.getUserName());
+            vs.setVisible(true);
+            Thread.sleep(3000);
+            vs.dispose();
+            ArrayList<Question> listQuestion = (ArrayList<Question>)res.getObject();
+            for(Question q: listQuestion){
+                System.out.println(q.getListAns()+" "+q.getQuestion()+" "+q.getCorrectAns());
+            }
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     public void acceptInvite(Request res){
@@ -163,6 +178,9 @@ public class Controller implements Runnable {
             if(myAccount.getUserName().equals(sp[0])){
                 showMessage("Bạn không thể thách đấu với chính mình", "close",null);
             }
+            else if(btn.getName().equals("2")){
+                showMessage("Người chơi đang trong trận","close", null);
+            }
             else showMessage("Bạn có muốn gửi lời thách đấu tới "+ sp[0],"challange",ip);
             //System.out.println(btn.getText());
         }
@@ -196,7 +214,6 @@ public class Controller implements Runnable {
                     this.m.dispose();
                     break;
                 case "challange":
-                    
                     sendMatch(this.ip);
                     this.m.dispose();
                     break;
