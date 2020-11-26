@@ -6,6 +6,7 @@
 // Bug khai bao ois trước oos lỗi
 package client.controllers;
 import Models.com.Pair;
+import Models.com.Question;
 import Models.com.Request;
 import Models.com.User;
 import java.net.Socket;
@@ -21,6 +22,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import static java.lang.Thread.sleep;
 import java.net.DatagramSocket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -76,6 +78,9 @@ public class Controller implements Runnable {
                     case "refuse":
                         handleRefuse(respond);
                         break;
+                    case "sendListQuestion":
+                        showQuestion(respond);
+                        break;
                 }
             } catch (IOException ex) {
                 //Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
@@ -83,6 +88,10 @@ public class Controller implements Runnable {
                 Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    public void showQuestion(Request res){
+        ArrayList<Question> listQuestion = (ArrayList<Question>)res.getObject();
+        
     }
     public void acceptInvite(Request res){
         User user = (User) res.getObject();
@@ -193,6 +202,7 @@ public class Controller implements Runnable {
                     break;
                 case "accept":
                     //System.out.println("chap nhan dau voi "+this.user.getUserName());
+                    acceptChellange(ip);
                     this.m.dispose();
                     break;
                 case "refuse":
