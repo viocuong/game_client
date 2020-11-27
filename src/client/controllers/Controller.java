@@ -93,6 +93,14 @@ public class Controller implements Runnable {
             }
         }
     }
+    class Timer {
+        public int time;
+        public boolean stop =false;
+        public Timer(int t){
+            this.time = t;
+        }
+    }
+    // Nhận được danh sách câu hỏi, tạo cửa sổ để làm
     public void showQuestion(Request res){
         try {
             //Đối thủ
@@ -102,11 +110,23 @@ public class Controller implements Runnable {
             vs.setVisible(true);
             Thread.sleep(3000);
             vs.dispose();
+            int AnsTime = 0;
+            Timer time = new Timer(30);
             ArrayList<Question> listQuestion = (ArrayList<Question>)res.getObject();
             QuestionsForm questionF = new QuestionsForm();
-            questionF.addActionListentBtnNext(new ListenBtnNext(listQuestion, questionF));
+            questionF.addActionListentBtnNext(new ListenBtnNext(listQuestion, questionF,time));
             questionF.setVisible(true);
             questionF.showQuestionI(listQuestion.get(cur), cur);
+            // Đếm giờ làm bài
+            
+            while((--time.time)>0 && time.stop == false){
+                Thread.sleep(1000);
+                AnsTime = time.time;
+                questionF.setTime(time.time);
+                
+                
+            }
+            
         } catch (InterruptedException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -127,9 +147,11 @@ public class Controller implements Runnable {
     class ListenBtnNext implements MouseListener{
         private ArrayList<Question> questions;
         private QuestionsForm f;
-        public ListenBtnNext(ArrayList<Question> q , QuestionsForm f){
+        private Timer time;
+        public ListenBtnNext(ArrayList<Question> q , QuestionsForm f, Timer time){
             this.f = f;
             this.questions = q;
+            this.time = time;
         }
         @Override
         public void mouseClicked(MouseEvent me) {
@@ -137,12 +159,18 @@ public class Controller implements Runnable {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             cur++;
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            if(cur<10) handlePlay(this.questions,this.f);
+            if(cur<10){
+                handlePlay(this.questions,this.f);
+                if(cur==9) f.setBtnNext("Nộp bài");
+            }
             else{
                 //Khi đã trả lời đủ 10 câu hỏi, nhận kết câu trả lời của người chơi gửi lên server
+                this.time.stop = true;
+                cur=0;
                 handleAns(f.getAns());
                 f.dispose();
             }
+        // * Phai reset var cur khi ket thuc game
         }
 
         @Override

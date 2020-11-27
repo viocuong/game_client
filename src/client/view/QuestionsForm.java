@@ -51,6 +51,9 @@ public class QuestionsForm extends javax.swing.JFrame{
         initCustom();
         setLocationRelativeTo(null);
     }
+    public void setBtnNext(String s){
+        this.btnNext.setText(s);
+    }
     public void initCustom() {
         
         btnNext = new JLabel();
@@ -298,6 +301,14 @@ public class QuestionsForm extends javax.swing.JFrame{
         
         
     }
+    public void setTime(int t){
+        if(t<10){
+            this.timer.setForeground(Color.red);
+            this.timer.setText(String.valueOf(t));
+            return;
+        }
+        this.timer.setText(String.valueOf(t));
+    }
 //    public void showQuestion(ArrayList<Question> questions) {
 //        
 //        this.questions = questions;
@@ -317,6 +328,7 @@ public class QuestionsForm extends javax.swing.JFrame{
         panelMain = new PanelCustom("background_question.jpeg");
         panelTop = new javax.swing.JPanel();
         iconAlarm = new javax.swing.JLabel();
+        timer = new javax.swing.JLabel();
         panelListAns = new javax.swing.JPanel();
         question = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -339,6 +351,9 @@ public class QuestionsForm extends javax.swing.JFrame{
 
         iconAlarm.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Res/icon_alarm.png"))); // NOI18N
 
+        timer.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
+        timer.setForeground(new java.awt.Color(254, 254, 254));
+
         javax.swing.GroupLayout panelTopLayout = new javax.swing.GroupLayout(panelTop);
         panelTop.setLayout(panelTopLayout);
         panelTopLayout.setHorizontalGroup(
@@ -346,13 +361,17 @@ public class QuestionsForm extends javax.swing.JFrame{
             .addGroup(panelTopLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(iconAlarm, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelTopLayout.setVerticalGroup(
             panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTopLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(iconAlarm)
+                .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(timer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(iconAlarm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -471,5 +490,6 @@ public class QuestionsForm extends javax.swing.JFrame{
     private javax.swing.JPanel panelMain;
     private javax.swing.JPanel panelTop;
     private javax.swing.JLabel question;
+    private javax.swing.JLabel timer;
     // End of variables declaration//GEN-END:variables
 }
