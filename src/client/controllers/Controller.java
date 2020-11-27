@@ -44,6 +44,7 @@ public class Controller implements Runnable {
     private Game game;
     private Map<String, Pair<User,Integer>> listPlayer = new HashMap<>();
     private User myAccount;
+    private int cur = 0;
     
     public Controller(){
         loginView = new LoginView();
@@ -103,13 +104,60 @@ public class Controller implements Runnable {
             vs.dispose();
             ArrayList<Question> listQuestion = (ArrayList<Question>)res.getObject();
             QuestionsForm questionF = new QuestionsForm();
+            questionF.addActionListentBtnNext(new ListenBtnNext(listQuestion, questionF));
             questionF.setVisible(true);
-            questionF.showQuestion(listQuestion);
+            questionF.showQuestionI(listQuestion.get(cur), cur);
         } catch (InterruptedException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    public void handlePlay(ArrayList<Question> questions, QuestionsForm f){
+        if(cur <10){
+            f.showQuestionI(questions.get(this.cur),cur);
+        }
+    }
+    public void submitAns(){
         
     }
+    class ListenBtnNext implements MouseListener{
+        private ArrayList<Question> questions;
+        private QuestionsForm f;
+        public ListenBtnNext(ArrayList<Question> q , QuestionsForm f){
+            this.f = f;
+            this.questions = q;
+        }
+        @Override
+        public void mouseClicked(MouseEvent me) {
+            this.f.resetAllTick();
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            cur++;
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            if(cur<10) handlePlay(this.questions,this.f);
+            else submitAns();
+        }
+
+        @Override
+        public void mousePressed(MouseEvent me) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent me) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent me) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public void mouseExited(MouseEvent me) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+        
+    }
+    // Nhận lời mời thách đấu từ người chơi khác 
     public void acceptInvite(Request res){
         User user = (User) res.getObject();
         //System.out.println(user.getUserName());
@@ -118,6 +166,7 @@ public class Controller implements Runnable {
         showMessage(user.getUserName()+" muốn thách đấu bạn, chiến?" , "accept",user.getIp());
         
     }
+    // gửi yêu cầu lấy người dùng đang online 
     public void getUserOnline(){
         
         Request req = new Request("getListPlayer");
@@ -187,12 +236,14 @@ public class Controller implements Runnable {
             //System.out.println(btn.getText());
         }
     }
+    // Hiện khung thông báo 
     public void showMessage(String content, String action, String ip){
         MessageDialog m = new MessageDialog(content);
         m.addListenerBtnCancel(new ListenActionCancel(m,action,ip));
         m.addListentBtnOk(new ListenActionOk(m,action,ip));
         m.setVisible(true);
     }
+    // Xử lý sự kiện khi chọn OK trong khung thông báo 
     public class ListenActionOk implements ActionListener{
         private MessageDialog m ;
         private String action;
@@ -236,14 +287,17 @@ public class Controller implements Runnable {
         send(req);
         
     }
+    // đối thủ từ chối lời mời
     public void handleRefuse(Request res){
         String userName = (String) res.getObject();
         showMessage(userName+" đã từ chối, chắc do sợ bạn đó:)", "refuse", userName);
     }
+    // gửi lời mời thách đấu
     public void sendMatch(String ip){
         Request req = new Request("match", (Object)ip);
         send(req);
     }
+    // lắng nghe sự kiện hủy bỏ trong showmessage
     public class ListenActionCancel implements ActionListener{
         private MessageDialog m ;
         private String action;
@@ -262,6 +316,7 @@ public class Controller implements Runnable {
             m.dispose();
         }   
     }
+    // nhận list người chơi online gửi từ server và hiển thị
     public void handleListPlayerOnline(Request res){
         try{
             if(res.getObject() == null) return;

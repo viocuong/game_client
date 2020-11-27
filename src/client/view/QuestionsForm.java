@@ -14,59 +14,143 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.util.ArrayList;
 import Models.com.*;
+import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 /**
  *
  * @author cuongnv
  */
-public class QuestionsForm extends javax.swing.JFrame implements ActionListener{
-
+public class QuestionsForm extends javax.swing.JFrame{
     /**
      * Creates new form QuestionsForm
      */
     private int m,n;
-    private int cur =0;
     private int width;
+    private JLabel btnNext;
     private int height;
+    private int nextX = 304, nextY =662;
     private int[] myAns = new int[10];
     private ArrayList<Question> questions;
     private Tick tick;
-
+    private JLabel[] btnAns = new JLabel[4];
+    private JPanel panelNext = new JPanel();
+    private int cur;
     public QuestionsForm() {
         initComponents();
         initCustom();
         setLocationRelativeTo(null);
     }
-
     public void initCustom() {
+        
+        btnNext = new JLabel();
+        btnNext.setFont(new java.awt.Font("Monospaced", 3, 26)); // NOI18N
+        btnNext.setForeground(new java.awt.Color(254, 254, 254));
+        //btnNext.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Res/icons8-next.png"))); // NOI18N
+        btnNext.setText("Câu tiếp");
+        btnNext.setLocation(nextX-35, nextY-10);
+        panelNext.setLocation(nextX-35, nextY-10);
+        panelNext.setSize(230,103);
+        panelNext.setBackground(new Color(0,0,0,0));
+        panelNext.setPreferredSize(new Dimension(230,103));
+        panelNext.add(new customPanelNext(230,103));
+        btnNext.setSize(230,103 );
+        btnNext.setPreferredSize(new Dimension(230,103));
+        btnNext.setHorizontalAlignment(JLabel.CENTER);
+        btnNext.setVerticalAlignment(JLabel.CENTER);
+        btnNext.setHorizontalTextPosition(JLabel.CENTER);
+        
+        
+        
+        panelMain.add(panelNext,0,0);
+        panelMain.add(btnNext,1,0);
+        btnNext.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnNext.setLocation(nextX-35, nextY);
         tick = new Tick("tick.png",panelListAns.getWidth(),panelListAns.getHeight()-20);
         tick.setPreferredSize(new Dimension(panelListAns.getWidth(),panelListAns.getHeight()-20));
         tick.setSize(panelListAns.getWidth(),panelListAns.getHeight()-20);
         this.width = getWidth();
         this.height = getHeight();
-        btnNext.setBackground(new Color(255, 178, 0));
-        btnNext.setBorder(null);
-        btnNext.addActionListener(this);
+        //btnNext.setBackground(new Color(255, 178, 0));
+        //btnNext.setBorder(null);
+        //btnNext.addMouseListener(new ListentBtnNext());
         panelListAns.setBackground(new Color(0, 0, 0, 0));
-        
+        int w = panelListAns.getWidth(), h=panelListAns.getHeight(); 
+        this.tick = new Tick("tick.png",w,h/4 -20);
+        JPanel[] backgroundP = new JPanel[4];
+        for(int idx = 0; idx <4; idx++){
+            backgroundP[idx] = new JPanel();
+            btnAns[idx] = new JLabel();
+            //int w = panelListAns.getWidth(), h=panelListAns.getHeight();
+            //int num = this.cur;
+            int locationH = 0;
+            int vertical =h/4;
+            Font font = new Font(Font.MONOSPACED, Font.BOLD,30);
+            
+            btnAns[idx].setForeground(new Color(254,254,254));
+            btnAns[idx].setName(String.valueOf(idx));
+            btnAns[idx].setBackground(new Color(45, 64, 89));
+            btnAns[idx].setSize(w,vertical-20);
+            backgroundP[idx].setSize(w,vertical-20);
+            backgroundP[idx].add(new componentLabel(w,h));
+            //btnAns[idx].add(new componentLabel(w,h));
+            
+            btnAns[idx].setFont(font);
+            //ans.setText(s);
+            //ans.setPreferredSize(new Dimension(w-1,vertical-20));
+            btnAns[idx].addMouseListener(new ListentClickAns(idx));
+            //btnAns[idx].setBackground(Color.red);
+        }
+        int locationH = 0;
+        int vertical =h/4;
+        for(int idx =0 ;idx < 4; idx++){
+            backgroundP[idx].setLocation(0,locationH);
+            btnAns[idx].setLocation(0, locationH);
+            locationH+=(vertical);
+            backgroundP[idx].setBackground(new Color(0,0,0,0));
+            panelListAns.add(backgroundP[idx],1,0);
+            panelListAns.add(btnAns[idx],2,0);
+        }
+        System.out.println(panelListAns.getWidth()+" "+panelListAns.getHeight());
         //panelListAns.add(new PanelAnsCustom(width,height));
     }
-
-    @Override
-    public void actionPerformed(ActionEvent ae) {
-        cur++;
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        if(cur<10) showQuestion(this.questions);
-        else submitAns();
-    }
+    
+//    @Override
+//    public void actionPerformed(ActionEvent ae) {
+//        cur++;
+//        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//        if(cur<10) showQuestion(this.questions);
+//        else submitAns();
+//    }
     public void submitAns(){
         
+    }
+    public void addActionListentBtnNext(MouseListener listener){
+        this.btnNext.addMouseListener(listener);
+    }
+    class customPanelNext extends JComponent{
+        private int w,h;
+    
+        public customPanelNext(int w, int h){
+            this.w = w;
+            this.h = h;
+            this.setSize(w,h);
+            this.setPreferredSize(new Dimension(w,h));
+        }
+        public void paint(Graphics g){
+            Graphics2D g2d= (Graphics2D) g;
+            Image img = new ImageIcon(getClass().getResource("/Res/icon_next_blue.png")).getImage();
+            g2d.drawImage(img,0,0, null);
+        }
     }
     class PanelCustom extends JPanel {
 
@@ -90,36 +174,27 @@ public class QuestionsForm extends javax.swing.JFrame implements ActionListener{
             g.drawImage(image, 0, 0, this);
         }
     }
-//    class componentBtnAns extends JComponent{
-//        private int width;
-//        private int height;
-//        public componentBtnAns(int width, int height){
-//            this.width = width;
-//            this.height = height;
-//        }
-//        public void paint(Graphics g){
-//            //super.paint(g);
-//            Color fontColor = new Color(242, 242, 242);
-//            //Font font  = new Font(Font.SANS_SERIF,Font.LAYOUT_LEFT_TO_RIGHT,28);
-//            Graphics2D g2d = (Graphics2D) g;
-////            g2d.setColor(new Color(52, 30, 69));
-////            g2d.fillRoundRect(0, 0, width, height, 20, 20);
-//            
-//            Color colorStatus = null;
-//            if(status == 1) colorStatus = Color.GREEN;
-//            else if(status ==2) colorStatus = Color.orange;
-//            else colorStatus = Color.red;
-//            g2d.setColor(colorStatus);
-//            g2d.fillOval(width-60, 10, 20, 20);
-//            Image img = new ImageIcon(getClass().getResource("/Res/icons8-change-user-30.png")).getImage();
-//            g2d.drawImage(img,20 ,8 , null);
-////            g2d.setFont(font);
-////            g2d.drawString("hello", 30, 20);
-//            g2d.setColor(new Color(255, 255, 51));
-//            Font f = new Font(Font.SANS_SERIF,Font.CENTER_BASELINE,14);
-//            g2d.drawString(String.valueOf(this.score),20, 55);
-//        }
-//    }
+
+    class componentLabel extends JComponent{
+        private int w;
+        private int h;
+        
+        public componentLabel(int w, int h){
+            this.w= w;
+            this.h = h;
+            
+            this.setPreferredSize(new Dimension(w,h));
+            this.setSize(w,h);
+        }
+        public void paint(Graphics g){
+            Graphics2D g2d= (Graphics2D) g;
+            g2d.setColor(new Color(89, 91, 131,150));
+//            g2d.fillRoundRect(0, 0, w, h, 30, 30);
+            Image img= new ImageIcon(getClass().getResource("/Res/iconAns.png")).getImage();
+            g2d.drawImage(img, 0,0, this);
+            Font font = new Font(Font.SANS_SERIF, Font.BOLD,30);
+        }
+    }
     class Tick extends JComponent{
         private Image image;
         private int w,h;
@@ -127,74 +202,105 @@ public class QuestionsForm extends javax.swing.JFrame implements ActionListener{
             image = new ImageIcon(getClass().getResource("/Res/"+img)).getImage();
             this.w = w;
             this.h = h;
+            this.setSize(w,h);
+            this.setPreferredSize(new Dimension(w,h));
+            
         }
         public void paint(Graphics g){
             Graphics2D g2d = (Graphics2D) g;
-            g2d.drawImage(image,5,5,null);
-            
-        }
-    }
-    class BtnAnsCustom extends JComponent{
-        public BtnAnsCustom(){
-            
-        }
-    }
-    public JButton createBtn(String s, int i, JButton[] btns){
-        int num = this.cur;
-        JButton res = new JButton();
-        Font font = new Font(Font.SANS_SERIF, Font.BOLD,30);
-        res.setForeground(new Color(254,254,254));
-        res.setText(s);
-        res.setName(String.valueOf(i));
-        res.setBorder(null);
-        res.setBackground(new Color(45, 64, 89,150));
-        res.addActionListener((ae) -> {
-            myAns[num]=i;
-            resetTick(res, num, i,btns);
-            JOptionPane.showMessageDialog(this, myAns[num]);
-        });
-        return res;
-    }
-    public void resetTick(JButton btn, int cur, int i,JButton[] btns){
-        for(int idx = 0; idx <4; idx++){
-            if(idx == i){
-                btns[i].add(this.tick);
-            }
-            else btns[i].remove(tick);
-        }
-    }
-    public void showQuestionI(Question q){
-        int w = panelListAns.getWidth(), h=panelListAns.getHeight();
-        panelListAns.removeAll();
-        panelListAns.repaint();
-        panelListAns.revalidate();
-        question.setText(q.getQuestion());
-        ArrayList<String> listAns = q.getListAns();
-        JButton[] btnAns = new JButton[4];
-        for(int idx = 0; idx <4; idx++){
-            btnAns[idx] = createBtn(listAns.get(idx),idx,btnAns);
-        }
-        int locationH = 0;
-        int vertical =h/4;
-        for(int idx =0 ;idx < 4; idx++){
-            btnAns[idx].setSize(w,vertical-20);
-            btnAns[idx].setPreferredSize(new Dimension(w,vertical-20));
-            btnAns[idx].setLocation(0, locationH);
-            locationH+=(vertical);
-            panelListAns.add(btnAns[idx]);
-        }
-        
-    }
-    public void showQuestion(ArrayList<Question> questions) {
-        this.questions = questions;
-        
-        if(cur <10){
-            showQuestionI(questions.get(this.cur));
-            
+            g2d.drawImage(image,20,20,this);
         }
     }
     
+    
+    public void resetTick(int i){
+        for(int idx = 0; idx <4; idx++){
+            
+            if(idx != i){
+                this.btnAns[idx].remove(this.tick);
+                this.btnAns[idx].revalidate();
+                this.btnAns[idx].repaint();
+            }
+            
+        }
+    }
+    public void showQuestionI(Question q, int cur){
+        //resetJpanel();
+        //resetJpanel();
+        this.cur = cur;
+        question.setText(q.getQuestion());
+        ArrayList<String> listAns = q.getListAns();
+       
+        for(int idx = 0; idx <4; idx++){
+            btnAns[idx].setHorizontalAlignment(JLabel.CENTER);
+            btnAns[idx].setVerticalAlignment(JLabel.CENTER);
+            btnAns[idx].setHorizontalTextPosition(JLabel.CENTER);
+            btnAns[idx].setText(listAns.get(idx));
+            btnAns[idx].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            btnAns[idx].revalidate();
+            btnAns[idx].repaint();
+            //btnAns[idx].setBackground(Color.red);
+        }
+        
+//        panelListAns.revalidate();
+//        panelListAns.repaint();
+        
+        
+    }
+    public void resetAllTick(){
+        for(int i =0; i<4;i++){
+            btnAns[i].remove(this.tick);
+            btnAns[i].revalidate();
+            btnAns[i].repaint();
+        }
+    }
+    
+    class ListentClickAns implements MouseListener{
+        private int i;
+                
+        public ListentClickAns(int i){
+            this.i = i;
+        }
+        @Override
+        public void mouseClicked(MouseEvent me) {
+           myAns[cur] = i+1;
+           btnAns[i].add(tick,2,0);
+           btnAns[i].revalidate();
+           btnAns[i].repaint();
+           
+            resetTick(i);
+            JOptionPane.showMessageDialog(panelMain,myAns[cur]);
+        }
+        @Override
+        public void mousePressed(MouseEvent me) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
 
+        @Override
+        public void mouseReleased(MouseEvent me) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent me) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public void mouseExited(MouseEvent me) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        
+        
+    }
+//    public void showQuestion(ArrayList<Question> questions) {
+//        
+//        this.questions = questions;
+//        if(cur <10){
+//            showQuestionI(questions.get(this.cur));
+//        }
+//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -208,8 +314,8 @@ public class QuestionsForm extends javax.swing.JFrame implements ActionListener{
         panelTop = new javax.swing.JPanel();
         iconAlarm = new javax.swing.JLabel();
         panelListAns = new javax.swing.JPanel();
-        btnNext = new javax.swing.JButton();
         question = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -257,45 +363,40 @@ public class QuestionsForm extends javax.swing.JFrame implements ActionListener{
             .addGap(0, 480, Short.MAX_VALUE)
         );
 
-        btnNext.setFont(new java.awt.Font("Monospaced", 3, 24)); // NOI18N
-        btnNext.setForeground(new java.awt.Color(254, 254, 254));
-        btnNext.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Res/icons8-next.png"))); // NOI18N
-        btnNext.setText("Câu tiếp");
-        btnNext.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-
-        question.setFont(new java.awt.Font("TlwgMono", 1, 18)); // NOI18N
+        question.setFont(new java.awt.Font("TlwgMono", 3, 26)); // NOI18N
         question.setForeground(new java.awt.Color(254, 242, 242));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Res/question.png"))); // NOI18N
 
         javax.swing.GroupLayout panelMainLayout = new javax.swing.GroupLayout(panelMain);
         panelMain.setLayout(panelMainLayout);
         panelMainLayout.setHorizontalGroup(
             panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(panelTop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMainLayout.createSequentialGroup()
-                .addContainerGap(35, Short.MAX_VALUE)
-                .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMainLayout.createSequentialGroup()
-                        .addComponent(panelListAns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMainLayout.createSequentialGroup()
-                        .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(21, 21, 21))))
             .addGroup(panelMainLayout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(question, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(35, 35, 35)
+                .addComponent(panelListAns, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(35, 35, 35))
+            .addGroup(panelMainLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(question, javax.swing.GroupLayout.PREFERRED_SIZE, 372, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelMainLayout.setVerticalGroup(
             panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMainLayout.createSequentialGroup()
                 .addComponent(panelTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(question, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelMainLayout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(question, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(33, 33, 33)
                 .addComponent(panelListAns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(93, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -360,8 +461,8 @@ public class QuestionsForm extends javax.swing.JFrame implements ActionListener{
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnNext;
     private javax.swing.JLabel iconAlarm;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel panelListAns;
     private javax.swing.JPanel panelMain;
     private javax.swing.JPanel panelTop;
