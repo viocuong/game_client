@@ -45,6 +45,7 @@ public class QuestionsForm extends javax.swing.JFrame{
     private JLabel[] btnAns = new JLabel[4];
     private JPanel panelNext = new JPanel();
     private int cur;
+    private int Time;
     public QuestionsForm() {
         initComponents();
         initCustom();
@@ -173,6 +174,9 @@ public class QuestionsForm extends javax.swing.JFrame{
             //Graphics2D g2d = (Graphics2D) g;
             g.drawImage(image, 0, 0, this);
         }
+    }
+    public int[] getAns(){
+        return this.myAns;
     }
 
     class componentLabel extends JComponent{

@@ -119,6 +119,11 @@ public class Controller implements Runnable {
     public void submitAns(){
         
     }
+    public void handleAns(int[] listAns){
+        for(int i =0;i <listAns.length;i++){
+            System.out.println(listAns[i]);
+        }
+    }
     class ListenBtnNext implements MouseListener{
         private ArrayList<Question> questions;
         private QuestionsForm f;
@@ -133,7 +138,11 @@ public class Controller implements Runnable {
             cur++;
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             if(cur<10) handlePlay(this.questions,this.f);
-            else submitAns();
+            else{
+                //Khi đã trả lời đủ 10 câu hỏi, nhận kết câu trả lời của người chơi gửi lên server
+                handleAns(f.getAns());
+                f.dispose();
+            }
         }
 
         @Override
