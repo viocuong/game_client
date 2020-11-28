@@ -46,6 +46,8 @@ public class QuestionsForm extends javax.swing.JFrame {
     private Tick tick;
     private JLabel[] btnAns = new JLabel[4];
     private JPanel panelNext = new JPanel();
+    private JPanel panelExit = new JPanel();
+    private JLabel btnExit = new JLabel();
     private int cur;
     private int Time;
     private JComponent custompanel;
@@ -58,25 +60,44 @@ public class QuestionsForm extends javax.swing.JFrame {
         this.btnNext.setText(s);
     }
     public void initCustom() {
+        
         custompanel = new customPanelNext(230, 103,"icon_next_blue.png");
+       
         btnNext = new JLabel();
+        btnNext.setName("next");
+        btnExit.setName("exit");
         btnNext.setFont(new java.awt.Font("Monospaced", 3, 26)); // NOI18N
         btnNext.setForeground(new java.awt.Color(254, 254, 254));
         btnNext.setText("Câu tiếp");
         btnNext.setLocation(nextX - 35, nextY - 10);
+        
+        btnExit.setLocation(panelListAns.getX() ,nextY-10);
+        btnExit.setSize(121,103);
+        btnExit.setPreferredSize(new Dimension(121,103));
         panelNext.setLocation(nextX - 35, nextY - 10);
         panelNext.setSize(230, 103);
         panelNext.setBackground(new Color(0, 0, 0, 0));
         panelNext.setPreferredSize(new Dimension(230, 103));
         panelNext.add(custompanel);
+        panelExit.setLocation(panelListAns.getX() ,nextY-10);
+        
+        panelExit.setSize(121,103);
+        panelExit.setPreferredSize(new Dimension(121,103));
+        panelExit.setBackground(new Color(0,0,0,0));
+        panelExit.add(new customPanelNext(121, 103, "icon_exit.png"));
         btnNext.setSize(230, 103);
         btnNext.setPreferredSize(new Dimension(230, 103));
         btnNext.setHorizontalAlignment(JLabel.CENTER);
         btnNext.setVerticalAlignment(JLabel.CENTER);
         btnNext.setHorizontalTextPosition(JLabel.CENTER);
         panelMain.add(panelNext, 0, 0);
+        panelMain.add(panelExit,0,0);
+        panelMain.add(btnExit,1,0);
         panelMain.add(btnNext, 1, 0);
-        btnNext.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnExit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        btnNext.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        panelExit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        panelNext.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnNext.setLocation(nextX - 35, nextY);
         tick = new Tick("tick.png", panelListAns.getWidth(), panelListAns.getHeight() - 20);
         tick.setPreferredSize(new Dimension(panelListAns.getWidth(), panelListAns.getHeight() - 20));
@@ -117,8 +138,9 @@ public class QuestionsForm extends javax.swing.JFrame {
     public void submitAns() {
 
     }
-    public void addActionListentBtnNext(MouseListener listener) {
+    public void addActionListentBtnNextOrExit(MouseListener listener) {
         this.btnNext.addMouseListener(listener);
+        this.btnExit.addMouseListener(listener);
     }
     class customPanelNext extends JComponent {
         private int w, h;
@@ -163,6 +185,10 @@ public class QuestionsForm extends javax.swing.JFrame {
         this.panelNext.add(new customPanelNext(230, 102,"icon_submit.png"));
         this.panelNext.revalidate();
         this.panelNext.repaint();
+        this.btnNext.setText("Nộp bài");
+        this.btnNext.revalidate();
+        this.btnNext.repaint();
+        
     }
     public int[] getAns() {
         return this.myAns;
@@ -211,7 +237,6 @@ public class QuestionsForm extends javax.swing.JFrame {
             }
         }
     }
-
     public void showQuestionI(Question q, int cur) {
         this.cur = cur;
         question.setText(q.getQuestion());
@@ -344,7 +369,7 @@ public class QuestionsForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(labelNumAns)
+                .addComponent(labelNumAns, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(80, 80, 80))

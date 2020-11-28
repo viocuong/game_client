@@ -97,7 +97,7 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="timer" min="-2" pref="83" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
-                      <Component id="labelNumAns" min="-2" max="-2" attributes="0"/>
+                      <Component id="labelNumAns" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jLabel3" min="-2" pref="63" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="80" max="-2" attributes="0"/>

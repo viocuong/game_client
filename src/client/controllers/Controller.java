@@ -6,6 +6,7 @@
 // Bug khai bao ois trước oos lỗi
 package client.controllers;
 import Models.com.Pair;
+import Models.com.*;
 import Models.com.Question;
 import Models.com.Request;
 import Models.com.User;
@@ -29,6 +30,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 /**
  *
  * @author cuongnv
@@ -114,7 +116,7 @@ public class Controller implements Runnable {
             Timer time = new Timer(30);
             ArrayList<Question> listQuestion = (ArrayList<Question>)res.getObject();
             QuestionsForm questionF = new QuestionsForm();
-            questionF.addActionListentBtnNext(new ListenBtnNext(listQuestion, questionF,time));
+            questionF.addActionListentBtnNextOrExit(new ListenBtnNext(listQuestion, questionF,time, u));
             questionF.setVisible(true);
             questionF.setNumAns(cur+1);
             questionF.showQuestionI(listQuestion.get(cur), cur);
@@ -125,7 +127,7 @@ public class Controller implements Runnable {
                 AnsTime = time.time;
                 questionF.setTime(time.time);
             }
-            
+            System.out.println("time la: "+ (30-AnsTime));
         } catch (InterruptedException ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -136,11 +138,11 @@ public class Controller implements Runnable {
             f.showQuestionI(questions.get(this.cur),cur);
         }
     }
-    public void submitAns(QuestionsForm f){
+    public void submitAns(QuestionsForm f, User user,int time,ArrayList<Question> questions){
         int[] ans  = f.getAns();
-        for(int i =0 ;i<10;i++){
-            System.out.println(ans[i]);
-        }
+        PostSubmitted submit = new PostSubmitted(user, ans, time,questions);
+        Request req = new Request("submit",(Object) submit);// câu trả lời- đối thủ - questions 
+        send(req);
     }
     public void handleAns(int[] listAns){
         for(int i =0;i <listAns.length;i++){
@@ -151,54 +153,52 @@ public class Controller implements Runnable {
         private ArrayList<Question> questions;
         private QuestionsForm f;
         private Timer time;
-        public ListenBtnNext(ArrayList<Question> q , QuestionsForm f, Timer time){
+        private User user;
+        public ListenBtnNext(ArrayList<Question> q , QuestionsForm f, Timer time, User u){
             this.f = f;
+            this.questions = questions;
             this.questions = q;
             this.time = time;
+            this.user = u;
         }
         @Override
         public void mouseClicked(MouseEvent me) {
-            this.f.resetAllTick();
-            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            cur++;
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            if(cur<10){
-                handlePlay(this.questions,this.f);
-                if(cur==9){
-                    f.setBtnSubmit();
-                    f.setBtnNext("Nộp bài");
+            JLabel btn = (JLabel) me.getComponent();
+            if(btn.getName().equals("next")){
+                this.f.resetAllTick();
+                cur++;
+                if(cur<10){
+                    handlePlay(this.questions,this.f);
+                    if(cur==9){
+                        f.setBtnSubmit();
+                        f.setBtnNext("Nộp bài");
+                    }
+                }
+                else{
+                    //Khi đã trả lời đủ 10 câu hỏi, nhận kết câu trả lời của người chơi gửi lên server
+                    this.time.stop = true;
+                    cur=0;
+                    submitAns(f,this.user, 30 - this.time.time, this.questions);
+                    f.dispose();
                 }
             }
+            //Khi đang làm bài mà thoát, vẫn gửi kết quả những câu đã làm được lên server
             else{
-                //Khi đã trả lời đủ 10 câu hỏi, nhận kết câu trả lời của người chơi gửi lên server
                 this.time.stop = true;
                 cur=0;
-                submitAns(f);
-                //handleAns(f.getAns());
+                submitAns(f,this.user,30 - this.time.time,this.questions);
                 f.dispose();
             }
         // * Phai reset var cur khi ket thuc game
         }
-
         @Override
-        public void mousePressed(MouseEvent me) {
-            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-
+        public void mousePressed(MouseEvent me) {}
         @Override
-        public void mouseReleased(MouseEvent me) {
-            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-
+        public void mouseReleased(MouseEvent me) {}
         @Override
-        public void mouseEntered(MouseEvent me) {
-            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-
+        public void mouseEntered(MouseEvent me) {}
         @Override
-        public void mouseExited(MouseEvent me) {
-            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
+        public void mouseExited(MouseEvent me) {}
         
     }
     // Nhận lời mời thách đấu từ người chơi khác 
