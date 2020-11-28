@@ -26,19 +26,21 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author cuongnv
  */
-public class QuestionsForm extends javax.swing.JFrame{
+public class QuestionsForm extends javax.swing.JFrame {
+
     /**
      * Creates new form QuestionsForm
      */
-    private int m,n;
+    private int m, n;
     private int width;
     private JLabel btnNext;
     private int height;
-    private int nextX = 304, nextY =662;
+    private int nextX = 304, nextY = 662;
     private int[] myAns = new int[10];
     private ArrayList<Question> questions;
     private Tick tick;
@@ -46,122 +48,98 @@ public class QuestionsForm extends javax.swing.JFrame{
     private JPanel panelNext = new JPanel();
     private int cur;
     private int Time;
+    private JComponent custompanel;
     public QuestionsForm() {
         initComponents();
         initCustom();
         setLocationRelativeTo(null);
     }
-    public void setBtnNext(String s){
+    public void setBtnNext(String s) {
         this.btnNext.setText(s);
     }
     public void initCustom() {
-        
+        custompanel = new customPanelNext(230, 103,"icon_next_blue.png");
         btnNext = new JLabel();
         btnNext.setFont(new java.awt.Font("Monospaced", 3, 26)); // NOI18N
         btnNext.setForeground(new java.awt.Color(254, 254, 254));
-        //btnNext.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Res/icons8-next.png"))); // NOI18N
         btnNext.setText("Câu tiếp");
-        btnNext.setLocation(nextX-35, nextY-10);
-        panelNext.setLocation(nextX-35, nextY-10);
-        panelNext.setSize(230,103);
-        panelNext.setBackground(new Color(0,0,0,0));
-        panelNext.setPreferredSize(new Dimension(230,103));
-        panelNext.add(new customPanelNext(230,103));
-        btnNext.setSize(230,103 );
-        btnNext.setPreferredSize(new Dimension(230,103));
+        btnNext.setLocation(nextX - 35, nextY - 10);
+        panelNext.setLocation(nextX - 35, nextY - 10);
+        panelNext.setSize(230, 103);
+        panelNext.setBackground(new Color(0, 0, 0, 0));
+        panelNext.setPreferredSize(new Dimension(230, 103));
+        panelNext.add(custompanel);
+        btnNext.setSize(230, 103);
+        btnNext.setPreferredSize(new Dimension(230, 103));
         btnNext.setHorizontalAlignment(JLabel.CENTER);
         btnNext.setVerticalAlignment(JLabel.CENTER);
         btnNext.setHorizontalTextPosition(JLabel.CENTER);
-        
-        
-        
-        panelMain.add(panelNext,0,0);
-        panelMain.add(btnNext,1,0);
+        panelMain.add(panelNext, 0, 0);
+        panelMain.add(btnNext, 1, 0);
         btnNext.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        btnNext.setLocation(nextX-35, nextY);
-        tick = new Tick("tick.png",panelListAns.getWidth(),panelListAns.getHeight()-20);
-        tick.setPreferredSize(new Dimension(panelListAns.getWidth(),panelListAns.getHeight()-20));
-        tick.setSize(panelListAns.getWidth(),panelListAns.getHeight()-20);
+        btnNext.setLocation(nextX - 35, nextY);
+        tick = new Tick("tick.png", panelListAns.getWidth(), panelListAns.getHeight() - 20);
+        tick.setPreferredSize(new Dimension(panelListAns.getWidth(), panelListAns.getHeight() - 20));
+        tick.setSize(panelListAns.getWidth(), panelListAns.getHeight() - 20);
         this.width = getWidth();
         this.height = getHeight();
-        //btnNext.setBackground(new Color(255, 178, 0));
-        //btnNext.setBorder(null);
-        //btnNext.addMouseListener(new ListentBtnNext());
         panelListAns.setBackground(new Color(0, 0, 0, 0));
-        int w = panelListAns.getWidth(), h=panelListAns.getHeight(); 
-        this.tick = new Tick("tick.png",w,h/4 -20);
+        int w = panelListAns.getWidth(), h = panelListAns.getHeight();
+        this.tick = new Tick("tick.png", w, h / 4 - 20);
         JPanel[] backgroundP = new JPanel[4];
-        for(int idx = 0; idx <4; idx++){
+        for (int idx = 0; idx < 4; idx++) {
             backgroundP[idx] = new JPanel();
             btnAns[idx] = new JLabel();
-            //int w = panelListAns.getWidth(), h=panelListAns.getHeight();
-            //int num = this.cur;
             int locationH = 0;
-            int vertical =h/4;
-            Font font = new Font(Font.MONOSPACED, Font.BOLD,30);
-            
-            btnAns[idx].setForeground(new Color(254,254,254));
+            int vertical = h / 4;
+            Font font = new Font(Font.MONOSPACED, Font.BOLD, 30);
+            btnAns[idx].setForeground(new Color(254, 254, 254));
             btnAns[idx].setName(String.valueOf(idx));
             btnAns[idx].setBackground(new Color(45, 64, 89));
-            btnAns[idx].setSize(w,vertical-20);
-            backgroundP[idx].setSize(w,vertical-20);
-            backgroundP[idx].add(new componentLabel(w,h));
-            //btnAns[idx].add(new componentLabel(w,h));
-            
+            btnAns[idx].setSize(w, vertical - 20);
+            backgroundP[idx].setSize(w, vertical - 20);
+            backgroundP[idx].add(new componentLabel(w, h));
             btnAns[idx].setFont(font);
-            //ans.setText(s);
-            //ans.setPreferredSize(new Dimension(w-1,vertical-20));
             btnAns[idx].addMouseListener(new ListentClickAns(idx));
-            //btnAns[idx].setBackground(Color.red);
         }
         int locationH = 0;
-        int vertical =h/4;
-        for(int idx =0 ;idx < 4; idx++){
-            backgroundP[idx].setLocation(0,locationH);
+        int vertical = h / 4;
+        for (int idx = 0; idx < 4; idx++) {
+            backgroundP[idx].setLocation(0, locationH);
             btnAns[idx].setLocation(0, locationH);
-            locationH+=(vertical);
-            backgroundP[idx].setBackground(new Color(0,0,0,0));
-            panelListAns.add(backgroundP[idx],1,0);
-            panelListAns.add(btnAns[idx],2,0);
+            locationH += (vertical);
+            backgroundP[idx].setBackground(new Color(0, 0, 0, 0));
+            panelListAns.add(backgroundP[idx], 1, 0);
+            panelListAns.add(btnAns[idx], 2, 0);
         }
-        System.out.println(panelListAns.getWidth()+" "+panelListAns.getHeight());
-        //panelListAns.add(new PanelAnsCustom(width,height));
+        System.out.println(panelListAns.getWidth() + " " + panelListAns.getHeight());
     }
-    
-//    @Override
-//    public void actionPerformed(ActionEvent ae) {
-//        cur++;
-//        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//        if(cur<10) showQuestion(this.questions);
-//        else submitAns();
-//    }
-    public void submitAns(){
-        
+    public void submitAns() {
+
     }
-    public void addActionListentBtnNext(MouseListener listener){
+    public void addActionListentBtnNext(MouseListener listener) {
         this.btnNext.addMouseListener(listener);
     }
-    class customPanelNext extends JComponent{
-        private int w,h;
-    
-        public customPanelNext(int w, int h){
+    class customPanelNext extends JComponent {
+        private int w, h;
+        private String srcImg;
+        public customPanelNext(int w, int h, String src) {
             this.w = w;
             this.h = h;
-            this.setSize(w,h);
-            this.setPreferredSize(new Dimension(w,h));
+            this.srcImg = src;
+            this.setSize(w, h);
+            this.setPreferredSize(new Dimension(w, h));
         }
-        public void paint(Graphics g){
-            Graphics2D g2d= (Graphics2D) g;
-            Image img = new ImageIcon(getClass().getResource("/Res/icon_next_blue.png")).getImage();
-            g2d.drawImage(img,0,0, null);
+        public void paint(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g;
+            Image img = new ImageIcon(getClass().getResource("/Res/"+srcImg)).getImage();
+            g2d.drawImage(img, 0, 0, null);
         }
     }
     class PanelCustom extends JPanel {
-
         private String img;
         private Image image;
         private int width, height;
-
         public PanelCustom(String img) {
             this.img = img;
             image = new ImageIcon(getClass().getResource("/Res/" + img)).getImage();
@@ -178,67 +156,68 @@ public class QuestionsForm extends javax.swing.JFrame{
             g.drawImage(image, 0, 0, this);
         }
     }
-    public int[] getAns(){
+    public void setBtnSubmit(){
+        this.panelNext.remove(this.custompanel);
+        this.panelNext.revalidate();
+        this.panelNext.repaint();
+        this.panelNext.add(new customPanelNext(230, 102,"icon_submit.png"));
+        this.panelNext.revalidate();
+        this.panelNext.repaint();
+    }
+    public int[] getAns() {
         return this.myAns;
     }
-
-    class componentLabel extends JComponent{
+    class componentLabel extends JComponent {
         private int w;
         private int h;
-        
-        public componentLabel(int w, int h){
-            this.w= w;
-            this.h = h;
-            
-            this.setPreferredSize(new Dimension(w,h));
-            this.setSize(w,h);
-        }
-        public void paint(Graphics g){
-            Graphics2D g2d= (Graphics2D) g;
-            g2d.setColor(new Color(89, 91, 131,150));
-//            g2d.fillRoundRect(0, 0, w, h, 30, 30);
-            Image img= new ImageIcon(getClass().getResource("/Res/iconAns.png")).getImage();
-            g2d.drawImage(img, 0,0, this);
-            Font font = new Font(Font.SANS_SERIF, Font.BOLD,30);
-        }
-    }
-    class Tick extends JComponent{
-        private Image image;
-        private int w,h;
-        public Tick(String img, int w, int h){
-            image = new ImageIcon(getClass().getResource("/Res/"+img)).getImage();
+        public componentLabel(int w, int h) {
             this.w = w;
             this.h = h;
-            this.setSize(w,h);
-            this.setPreferredSize(new Dimension(w,h));
-            
+            this.setPreferredSize(new Dimension(w, h));
+            this.setSize(w, h);
         }
-        public void paint(Graphics g){
+        public void paint(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
-            g2d.drawImage(image,20,20,this);
+            g2d.setColor(new Color(89, 91, 131, 150));
+//            g2d.fillRoundRect(0, 0, w, h, 30, 30);
+            Image img = new ImageIcon(getClass().getResource("/Res/iconAns.png")).getImage();
+            g2d.drawImage(img, 0, 0, this);
+            Font font = new Font(Font.SANS_SERIF, Font.BOLD, 30);
         }
     }
-    
-    
-    public void resetTick(int i){
-        for(int idx = 0; idx <4; idx++){
-            
-            if(idx != i){
+    class Tick extends JComponent {
+        private Image image;
+        private int w, h;
+        public Tick(String img, int w, int h) {
+            image = new ImageIcon(getClass().getResource("/Res/" + img)).getImage();
+            this.w = w;
+            this.h = h;
+            this.setSize(w, h);
+            this.setPreferredSize(new Dimension(w, h));
+        }
+        public void paint(Graphics g) {
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.drawImage(image, 20, 20, this);
+        }
+    }
+
+    public void resetTick(int i) {
+        for (int idx = 0; idx < 4; idx++) {
+
+            if (idx != i) {
                 this.btnAns[idx].remove(this.tick);
                 this.btnAns[idx].revalidate();
                 this.btnAns[idx].repaint();
             }
-            
         }
     }
-    public void showQuestionI(Question q, int cur){
-        //resetJpanel();
-        //resetJpanel();
+
+    public void showQuestionI(Question q, int cur) {
         this.cur = cur;
         question.setText(q.getQuestion());
         ArrayList<String> listAns = q.getListAns();
-       
-        for(int idx = 0; idx <4; idx++){
+
+        for (int idx = 0; idx < 4; idx++) {
             btnAns[idx].setHorizontalAlignment(JLabel.CENTER);
             btnAns[idx].setVerticalAlignment(JLabel.CENTER);
             btnAns[idx].setHorizontalTextPosition(JLabel.CENTER);
@@ -246,38 +225,39 @@ public class QuestionsForm extends javax.swing.JFrame{
             btnAns[idx].setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             btnAns[idx].revalidate();
             btnAns[idx].repaint();
-            //btnAns[idx].setBackground(Color.red);
         }
-        
-//        panelListAns.revalidate();
-//        panelListAns.repaint();
-        
-        
     }
-    public void resetAllTick(){
-        for(int i =0; i<4;i++){
+    public void setNumAns(int i){
+        this.labelNumAns.setText(String.valueOf(i));
+    }
+
+    public void resetAllTick() {
+        for (int i = 0; i < 4; i++) {
             btnAns[i].remove(this.tick);
             btnAns[i].revalidate();
             btnAns[i].repaint();
         }
     }
-    
-    class ListentClickAns implements MouseListener{
+
+    class ListentClickAns implements MouseListener {
+
         private int i;
-                
-        public ListentClickAns(int i){
+
+        public ListentClickAns(int i) {
             this.i = i;
         }
+
         @Override
         public void mouseClicked(MouseEvent me) {
-           myAns[cur] = i+1;
-           btnAns[i].add(tick,2,0);
-           btnAns[i].revalidate();
-           btnAns[i].repaint();
-           
+            myAns[cur] = i + 1;
+            btnAns[i].add(tick, 2, 0);
+            btnAns[i].revalidate();
+            btnAns[i].repaint();
+
             resetTick(i);
-            JOptionPane.showMessageDialog(panelMain,myAns[cur]);
+            JOptionPane.showMessageDialog(panelMain, myAns[cur]);
         }
+
         @Override
         public void mousePressed(MouseEvent me) {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -298,24 +278,17 @@ public class QuestionsForm extends javax.swing.JFrame{
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
 
-        
-        
     }
-    public void setTime(int t){
-        if(t<10){
+
+    public void setTime(int t) {
+        if (t < 10) {
             this.timer.setForeground(Color.red);
             this.timer.setText(String.valueOf(t));
             return;
         }
         this.timer.setText(String.valueOf(t));
     }
-//    public void showQuestion(ArrayList<Question> questions) {
-//        
-//        this.questions = questions;
-//        if(cur <10){
-//            showQuestionI(questions.get(this.cur));
-//        }
-//    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -329,6 +302,8 @@ public class QuestionsForm extends javax.swing.JFrame{
         panelTop = new javax.swing.JPanel();
         iconAlarm = new javax.swing.JLabel();
         timer = new javax.swing.JLabel();
+        labelNumAns = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         panelListAns = new javax.swing.JPanel();
         question = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -354,6 +329,14 @@ public class QuestionsForm extends javax.swing.JFrame{
         timer.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         timer.setForeground(new java.awt.Color(254, 254, 254));
 
+        labelNumAns.setFont(new java.awt.Font("Ubuntu", 3, 30)); // NOI18N
+        labelNumAns.setForeground(new java.awt.Color(254, 254, 254));
+        labelNumAns.setText("     ");
+
+        jLabel3.setFont(new java.awt.Font("Ubuntu", 3, 30)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(254, 254, 254));
+        jLabel3.setText("/ 10");
+
         javax.swing.GroupLayout panelTopLayout = new javax.swing.GroupLayout(panelTop);
         panelTop.setLayout(panelTopLayout);
         panelTopLayout.setHorizontalGroup(
@@ -363,15 +346,23 @@ public class QuestionsForm extends javax.swing.JFrame{
                 .addComponent(iconAlarm, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(labelNumAns)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(80, 80, 80))
         );
         panelTopLayout.setVerticalGroup(
             panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTopLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(timer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(iconAlarm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE)
+                .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelNumAns)
+                        .addComponent(jLabel3))
+                    .addGroup(panelTopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(timer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(iconAlarm, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -379,7 +370,7 @@ public class QuestionsForm extends javax.swing.JFrame{
         panelListAns.setLayout(panelListAnsLayout);
         panelListAnsLayout.setHorizontalGroup(
             panelListAnsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 504, Short.MAX_VALUE)
+            .addGap(0, 521, Short.MAX_VALUE)
         );
         panelListAnsLayout.setVerticalGroup(
             panelListAnsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -438,14 +429,14 @@ public class QuestionsForm extends javax.swing.JFrame{
 
     private void panelTopMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelTopMousePressed
         // TODO add your handling code here:
-        m=evt.getX();
-        n=evt.getY();
+        m = evt.getX();
+        n = evt.getY();
     }//GEN-LAST:event_panelTopMousePressed
 
     private void panelTopMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelTopMouseDragged
-        int x=evt.getXOnScreen();
-        int y=evt.getYOnScreen();
-        this.setLocation(x-m, y-n);
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+        this.setLocation(x - m, y - n);
     }//GEN-LAST:event_panelTopMouseDragged
 
     /**
@@ -486,6 +477,8 @@ public class QuestionsForm extends javax.swing.JFrame{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel iconAlarm;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel labelNumAns;
     private javax.swing.JPanel panelListAns;
     private javax.swing.JPanel panelMain;
     private javax.swing.JPanel panelTop;

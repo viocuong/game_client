@@ -116,15 +116,14 @@ public class Controller implements Runnable {
             QuestionsForm questionF = new QuestionsForm();
             questionF.addActionListentBtnNext(new ListenBtnNext(listQuestion, questionF,time));
             questionF.setVisible(true);
+            questionF.setNumAns(cur+1);
             questionF.showQuestionI(listQuestion.get(cur), cur);
             // Đếm giờ làm bài
             
-            while((--time.time)>0 && time.stop == false){
+            while((--time.time)>=0 && time.stop == false){
                 Thread.sleep(1000);
                 AnsTime = time.time;
                 questionF.setTime(time.time);
-                
-                
             }
             
         } catch (InterruptedException ex) {
@@ -133,11 +132,15 @@ public class Controller implements Runnable {
     }
     public void handlePlay(ArrayList<Question> questions, QuestionsForm f){
         if(cur <10){
+            f.setNumAns(cur+1);
             f.showQuestionI(questions.get(this.cur),cur);
         }
     }
-    public void submitAns(){
-        
+    public void submitAns(QuestionsForm f){
+        int[] ans  = f.getAns();
+        for(int i =0 ;i<10;i++){
+            System.out.println(ans[i]);
+        }
     }
     public void handleAns(int[] listAns){
         for(int i =0;i <listAns.length;i++){
@@ -161,13 +164,18 @@ public class Controller implements Runnable {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             if(cur<10){
                 handlePlay(this.questions,this.f);
-                if(cur==9) f.setBtnNext("Nộp bài");
+                if(cur==9){
+                    f.setBtnSubmit();
+                    f.setBtnNext("Nộp bài");
+                    
+                }
             }
             else{
                 //Khi đã trả lời đủ 10 câu hỏi, nhận kết câu trả lời của người chơi gửi lên server
                 this.time.stop = true;
                 cur=0;
-                handleAns(f.getAns());
+                submitAns(f);
+                //handleAns(f.getAns());
                 f.dispose();
             }
         // * Phai reset var cur khi ket thuc game
