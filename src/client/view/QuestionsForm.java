@@ -277,9 +277,7 @@ public class QuestionsForm extends javax.swing.JFrame {
         public void mouseExited(MouseEvent me) {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
-
     }
-
     public void setTime(int t) {
         if (t < 10) {
             this.timer.setForeground(Color.red);
@@ -288,7 +286,6 @@ public class QuestionsForm extends javax.swing.JFrame {
         }
         this.timer.setText(String.valueOf(t));
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -473,7 +470,6 @@ public class QuestionsForm extends javax.swing.JFrame {
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel iconAlarm;
     private javax.swing.JLabel jLabel1;

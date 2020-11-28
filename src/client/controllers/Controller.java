@@ -167,7 +167,6 @@ public class Controller implements Runnable {
                 if(cur==9){
                     f.setBtnSubmit();
                     f.setBtnNext("Nộp bài");
-                    
                 }
             }
             else{
