@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 /**
  *
@@ -87,6 +88,10 @@ public class Controller implements Runnable {
                     case "sendListQuestion":
                         showQuestion(respond);
                         break;
+                    // Nhận kết quả trận đấu
+                    case "result":
+                        showResult(respond);
+                        break;
                 }
             } catch (IOException ex) {
                 //Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
@@ -94,6 +99,52 @@ public class Controller implements Runnable {
                 Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    public void showResult(Request res){
+        Result result = (Result) res.getObject();
+        if(result.getIsEquals()){
+            showMessage("Bạn đã hòa với "+result.getCompetitor().getUserName(),"equalsGame",result.getCompetitor().getIp());
+        }
+        else if(result.getIsWin()){
+            YouWin yw = new YouWin();
+            yw.setVisible(true);
+            yw.setDetail(result.getNumCorrect()+"/10    "+result.getTime()+"s");
+            yw.addListenBtnExitAndRematch(new ListenRematchAndExit(result.getCompetitor(),yw));
+        }
+        else{
+            YouLose yl = new YouLose();
+            yl.setVisible(true);
+            yl.setDetail(result.getNumCorrect()+"/10    "+result.getTime()+"s");
+            yl.addListenBtnExitAndRematch(new ListenRematchAndExit(result.getCompetitor(), yl));
+        }
+    }
+    public class ListenRematchAndExit implements MouseListener{
+        private User competitor;
+        private JFrame frame;
+        public ListenRematchAndExit(User competitor, JFrame frame){
+            this.frame = frame;
+            this.competitor = competitor;
+        }
+        @Override
+        public void mouseClicked(MouseEvent me) {
+            JLabel btn = (JLabel) me.getComponent();
+            if(btn.getName().equals("btnReMatch")){
+                showMessage("Bạn có muốn đấu lại với "+competitor.getUserName(),"challange" ,competitor.getIp());
+            }
+            else{
+               this.frame.dispose();
+            }
+        }
+        @Override
+        public void mousePressed(MouseEvent me) {}
+        @Override
+        public void mouseReleased(MouseEvent me) {}
+
+        @Override
+        public void mouseEntered(MouseEvent me) {}
+        @Override
+        public void mouseExited(MouseEvent me) {}
+        
     }
     class Timer {
         public int time;
