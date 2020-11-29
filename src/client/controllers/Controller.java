@@ -355,7 +355,7 @@ public class Controller implements Runnable {
 
             while (true) {
                 try {
-                    sleep(1000);
+                    sleep(5000);
                     getUserOnline();
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);

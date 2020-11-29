@@ -39,116 +39,99 @@ import javax.swing.border.Border;
  * @author cuongnv
  */
 public class Game extends javax.swing.JFrame {
-
     /**
      * Creates new form Game
      */
     private ActionListener al;
     private ArrayList<JButton> listBtnPlayer;
-
     public Game() {
         initComponents();
         this.setVisible(true);
         initComponentCustom();
         setLocationRelativeTo(null);
     }
-
-    public void initComponentCustom() {
+    public void initComponentCustom(){
         btnClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnMinimize.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        jPanelListPlayer.setBackground(new Color(52, 30, 69, 90));
-        GridLayout gl = new GridLayout(8, 1);
+        jPanelListPlayer.setBackground(new Color(52, 30, 69,90));
+        GridLayout gl = new GridLayout(8,1);
         gl.setHgap(20);
         gl.setVgap(20);
         jPanelListPlayer.setLayout(gl);
-        jPanelListPlayer.setSize(430, 500);
-        jPanelListPlayer.setPreferredSize(new Dimension(430, 500));
+        jPanelListPlayer.setSize(430,500);
+        jPanelListPlayer.setPreferredSize(new Dimension(430,500));
         jPanelGame.setSize(new Dimension(1209, 697));
         //jPanelInfoAccount.setBackground(new Color(52, 30, 69,50));
     }
-
-    public void initJpanelPlayers() {
-        int w = jPanelGame.getWidth(), h = jPanelGame.getHeight();
-
+    public void initJpanelPlayers(){
+        int w = jPanelGame.getWidth(), h =jPanelGame.getHeight();
+        
+        
         //jPanelListPlayer = new JPanel();
-        jPanelListPlayer.setBounds(w / 3, 50, w / 3, 600);
-        jPanelListPlayer.setBackground(new Color(52, 30, 69, 90));
-        GridLayout gl = new GridLayout(8, 1);
+        jPanelListPlayer.setBounds(w/3, 50, w/3,600 );
+        jPanelListPlayer.setBackground(new Color(52, 30, 69,90));
+        GridLayout gl = new GridLayout(8,1);
         gl.setHgap(20);
         gl.setVgap(20);
         jPanelListPlayer.setLayout(gl);
-        jPanelListPlayer.setSize(430, 500);
-        jPanelListPlayer.setPreferredSize(new Dimension(430, 500));
+        jPanelListPlayer.setSize(430,500);
+        jPanelListPlayer.setPreferredSize(new Dimension(430,500));
         //jPanelGame.add(jPanelListPlayer);
     }
-
-    class componentBtnPlayer extends JComponent {
-
+    class componentBtnPlayer extends JComponent{
         private int status;
         private int width;
         private int height;
         private float score;
-
-        public componentBtnPlayer(int status, int width, int height, float score) {
+        public componentBtnPlayer(int status, int width, int height, float score){
             this.status = status;
             this.width = width;
             this.height = height;
             this.score = score;
         }
-
-        public void paint(Graphics g) {
+        public void paint(Graphics g){
             //super.paint(g);
             Color fontColor = new Color(242, 242, 242);
-            Font font = new Font(Font.SANS_SERIF, Font.LAYOUT_LEFT_TO_RIGHT, 20);
+            Font font  = new Font(Font.SANS_SERIF,Font.LAYOUT_LEFT_TO_RIGHT,20);
             Graphics2D g2d = (Graphics2D) g;
 //            g2d.setColor(new Color(52, 30, 69));
 //            g2d.fillRoundRect(0, 0, width, height, 20, 20);
-
+            
             Color colorStatus = null;
-            if (status == 1) {
-                colorStatus = Color.GREEN;
-            } else if (status == 2) {
-                colorStatus = Color.orange;
-            } else {
-                colorStatus = Color.red;
-            }
+            if(status == 1) colorStatus = Color.GREEN;
+            else if(status ==2) colorStatus = Color.orange;
+            else colorStatus = Color.red;
             g2d.setColor(colorStatus);
-            g2d.fillOval(width - 60, 10, 20, 20);
+            g2d.fillOval(width-60, 10, 20, 20);
             Image img = new ImageIcon(getClass().getResource("/Res/icons8-change-user-30.png")).getImage();
-            g2d.drawImage(img, 20, 8, null);
+            g2d.drawImage(img,20 ,8 , null);
 //            g2d.setFont(font);
 //            g2d.drawString("hello", 30, 20);
             g2d.setColor(new Color(255, 255, 51));
-            Font f = new Font(Font.SANS_SERIF, Font.CENTER_BASELINE, 14);
-            g2d.drawString(String.valueOf(this.score), 20, 55);
+            Font f = new Font(Font.SANS_SERIF,Font.CENTER_BASELINE,14);
+            g2d.drawString(String.valueOf(this.score),20, 55);
         }
     }
-
-    public void showMyAccount(User user) {
+    public void showMyAccount(User user){
         this.labelAccount.setText(user.getUserName());
         //JOptionPane.showMessageDialog(this, user.getScore());
         this.labelScore.setText(String.valueOf(user.getScore()));
     }
-
-    public void setActionListener(ActionListener al) {
+    public void setActionListener(ActionListener al){
         this.al = al;
     }
-
-    class PanelImage extends JPanel {
-
+    class PanelImage extends JPanel{
         private Image img;
-
-        public PanelImage(String image) {
-            img = new ImageIcon(getClass().getResource("/Res/" + image)).getImage();
-            Dimension size = new Dimension(img.getWidth(this), img.getHeight(this));
+        public PanelImage(String image){
+            img = new ImageIcon(getClass().getResource("/Res/"+image)).getImage();
+            Dimension size = new Dimension(img.getWidth(this),img.getHeight(this));
             setPreferredSize(size);
             setMinimumSize(size);
             setMaximumSize(size);
             setLayout(null);
         }
-
         @Override
-        protected void paintComponent(Graphics g) {
+        protected void paintComponent(Graphics g){
 //            Graphics2D g2d = (Graphics2D) g;
 //            int width = this.getWidth();
 //            int height = this.getHeight();
@@ -157,32 +140,30 @@ public class Game extends javax.swing.JFrame {
 //            GradientPaint gp = new GradientPaint(0, 0, cl1, 100, height, cl2);
 //            g2d.setPaint(gp);
 //            g2d.fillRect(0, 0, width, height);
-            g.drawImage(img, 0, 0, null);
+            g.drawImage(img,0, 0, null);
         }
     }
-
-    public void deleteBtnPlayer() {
-        for (JButton b : listBtnPlayer) {
+    public void deleteBtnPlayer(){
+        for(JButton b:listBtnPlayer ){
             jPanelListPlayer.remove(b);
         }
         listBtnPlayer.clear();
     }
-
-    public void showListPlayer(Map<String, Pair<User, Integer>> listPlayer) {
+    public void showListPlayer(Map<String, Pair<User, Integer>> listPlayer){
         int w = jPanelListPlayer.getWidth(), h = jPanelListPlayer.getHeight();
         jPanelListPlayer.removeAll();
         jPanelListPlayer.revalidate();
         jPanelListPlayer.repaint();
         initJpanelPlayers();
-        Font font = new Font(Font.SANS_SERIF, Font.LAYOUT_LEFT_TO_RIGHT, 20);
+        Font font  = new Font(Font.SANS_SERIF,Font.LAYOUT_LEFT_TO_RIGHT,20);
         Color btnColor = new Color(52, 30, 69);
         Color fontColor = new Color(242, 242, 242);
         listBtnPlayer = new ArrayList<>();
         int y = 0;
-        for (Map.Entry<String, Pair<User, Integer>> player : listPlayer.entrySet()) {
+        for(Map.Entry<String ,Pair<User,Integer>>  player: listPlayer.entrySet()){
             JButton btnPlayer = new JButton();
             btnPlayer.setForeground(fontColor);
-            btnPlayer.setSize(new Dimension(w, 60));
+            btnPlayer.setSize(new Dimension(w,60));
             btnPlayer.setLocation(0, y);
             btnPlayer.setBounds(0, y, w, 60);
             componentBtnPlayer comp = new componentBtnPlayer(player.getValue().getValue(), w, h, player.getValue().getKey().getScore());
@@ -193,34 +174,31 @@ public class Game extends javax.swing.JFrame {
             btnPlayer.setFont(font);
             btnPlayer.setBorder(null);
             btnPlayer.setBackground(btnColor);
-            btnPlayer.addMouseListener(new MouseAdapter() {
-                public void mouseEntered(MouseEvent e) {
+            btnPlayer.addMouseListener(new MouseAdapter(){
+                public void mouseEntered(MouseEvent e){
                     btnPlayer.setBackground(new Color(80, 47, 106));
                 }
-
-                public void mouseExited(MouseEvent e) {
+                public void mouseExited(MouseEvent e){
                     btnPlayer.setBackground(new Color(52, 30, 69));
                 }
             });
             btnPlayer.setName((String.valueOf(player.getValue().getValue())));
-            btnPlayer.setText(player.getValue().getKey().getUserName() + " ip:" + player.getKey());
+            btnPlayer.setText(player.getValue().getKey().getUserName()+" ip:"+player.getKey());
             btnPlayer.addActionListener(al);
-
+            
             listBtnPlayer.add(btnPlayer);
-
+            
             jPanelListPlayer.add(btnPlayer);
-            y += 65;
+            y+=65;
         }
         //JOptionPane.showMessageDialog(this,listBtnPlayer.size());
     }
-
-    public void addListentBtnPlayer(ActionListener l) {
-        for (JButton btn : listBtnPlayer) {
+    public void addListentBtnPlayer(ActionListener l){
+        for(JButton btn : listBtnPlayer){
             //JOptionPane.showMessageDialog(this, btn.getText());
             btn.addActionListener(l);
         }
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -377,11 +355,11 @@ public class Game extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMinimizeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnMinimizeKeyPressed
-
+    
     }//GEN-LAST:event_btnMinimizeKeyPressed
 
     private void btnCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCloseMouseClicked
-        if (JOptionPane.showConfirmDialog(null, "Bạn chắc chăn muốn thoát game hay này?", "Yes", JOptionPane.YES_NO_OPTION) == 0) {
+        if(JOptionPane.showConfirmDialog(null,"Bạn chắc chăn muốn thoát game hay này?","Yes",JOptionPane.YES_NO_OPTION)==0){
             this.dispose();
         }
     }//GEN-LAST:event_btnCloseMouseClicked
