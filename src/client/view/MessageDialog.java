@@ -18,27 +18,31 @@ public class MessageDialog extends javax.swing.JFrame {
      * Creates new form MessageDialog
      */
     private boolean is_messageWarning = false;
+
     public MessageDialog(String str) {
         this.is_messageWarning = is_messageWarning;
         initComponents();
         initComponentCustom();
         labelContent.setText(str);
-        
+
         setLocationRelativeTo(null);
     }
-    public void initComponentCustom(){
-        
-        this.setBackground(new Color(52,30,69,0));
-        panelMain.setBackground(new Color(52, 30, 69,160));
+
+    public void initComponentCustom() {
+
+        this.setBackground(new Color(52, 30, 69, 0));
+        panelMain.setBackground(new Color(52, 30, 69, 160));
         btnCancel.setBorder(null);
         btnOk.setBorder(null);
         btnCancel.setBackground(new Color(236, 88, 88));
         btnOk.setBackground(new Color(2, 120, 174));
     }
-    public void addListentBtnOk(ActionListener l ){
+
+    public void addListentBtnOk(ActionListener l) {
         btnOk.addActionListener(l);
     }
-    public void addListenerBtnCancel(ActionListener l){
+
+    public void addListenerBtnCancel(ActionListener l) {
         btnCancel.addActionListener(l);
     }
 
@@ -143,14 +147,14 @@ public class MessageDialog extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void panelMainMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMainMousePressed
-        m=evt.getX();
-        n=evt.getY();
+        m = evt.getX();
+        n = evt.getY();
     }//GEN-LAST:event_panelMainMousePressed
 
     private void panelMainMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMainMouseDragged
-        int x=evt.getXOnScreen();
-        int y=evt.getYOnScreen();
-        this.setLocation(x-m, y-n);
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+        this.setLocation(x - m, y - n);
     }//GEN-LAST:event_panelMainMouseDragged
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
@@ -191,7 +195,7 @@ public class MessageDialog extends javax.swing.JFrame {
 //            }
 //        });
 //    }
-    private int m,n;
+    private int m, n;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnOk;

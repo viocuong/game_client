@@ -30,68 +30,77 @@ public class YouLose extends javax.swing.JFrame {
     private int width;
     private int height;
     private JPanel panelLose;
+
     public YouLose() {
         initComponents();
         initCustom();
         setLocationRelativeTo(null);
     }
-    public void initCustom(){
-        this.setBackground(new Color(111,111,111,0));
+
+    public void initCustom() {
+        this.setBackground(new Color(111, 111, 111, 0));
         width = getWidth();
         height = getHeight();
         panelLose = new JPanel();
-        Font font  = new Font(Font.SANS_SERIF,Font.BOLD, 28);
-        Color fontColor = new Color(254,254,254);
-        panelLose.setSize(451 ,450);
-        panelLose.setPreferredSize(new Dimension(451,450));
+        Font font = new Font(Font.SANS_SERIF, Font.BOLD, 28);
+        Color fontColor = new Color(254, 254, 254);
+        panelLose.setSize(451, 450);
+        panelLose.setPreferredSize(new Dimension(451, 450));
         panelLose.add(new customPanel("youlose.png"));
-        panelLose.setBackground(new Color(20,111,112,0));
+        panelLose.setBackground(new Color(20, 111, 112, 0));
         panelLose.setLayout(null);
         panelMain.add(panelLose);
-        panelMain.setBackground(new Color(0,0,0,0));
-        panelBtnRematch.setBackground(new Color(0,0,0,0));
-        panelBtnExit.setBackground(new Color(0,0,0,0));
+        panelMain.setBackground(new Color(0, 0, 0, 0));
+        panelBtnRematch.setBackground(new Color(0, 0, 0, 0));
+        panelBtnExit.setBackground(new Color(0, 0, 0, 0));
         btnExit.setForeground(fontColor);
         btnReMatch.setForeground(fontColor);
         btnExit.setFont(font);
         btnReMatch.setFont(font);
         btnExit.setHorizontalAlignment(JLabel.CENTER);
         btnReMatch.setHorizontalAlignment(JLabel.CENTER);
-        
+
         btnExit.setName("btnEitResult");
         btnReMatch.setName("btnReMatch");
         btnExit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnReMatch.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        
+
         btnExit.setText("Thoát");
         btnReMatch.setText("Đấu lại");
         panelBtnRematch.add(new customPanel("btn_rematch.png"));
         panelBtnExit.add(new customPanel("btn_rematch.png"));
-        
+
     }
-    class customPanel extends JComponent{
+
+    class customPanel extends JComponent {
+
         private int w;
         private int h;
         private Image image;
-        public customPanel(String img){
-            image = new ImageIcon(getClass().getResource("/Res/"+img)).getImage();
+
+        public customPanel(String img) {
+            image = new ImageIcon(getClass().getResource("/Res/" + img)).getImage();
             w = image.getWidth(this);
             h = image.getHeight(this);
-            this.setSize(w,h);
-            this.setPreferredSize(new Dimension(w,h));
+            this.setSize(w, h);
+            this.setPreferredSize(new Dimension(w, h));
         }
-        public void paint(Graphics g){
+
+        public void paint(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
-            g2d.drawImage(this.image,0, 0, this);
+            g2d.drawImage(this.image, 0, 0, this);
         }
     }
-    public void addListenBtnExitAndRematch(MouseListener m){
+
+    public void addListenBtnExitAndRematch(MouseListener m) {
         btnExit.addMouseListener(m);
         btnReMatch.addMouseListener(m);
     }
-    public void setDetail(String s){
+
+    public void setDetail(String s) {
         this.labelDetail.setText(s);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -185,7 +194,7 @@ public class YouLose extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelMain, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
+            .addComponent(panelMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,16 +205,17 @@ public class YouLose extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void panelMainMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMainMousePressed
-        m=evt.getX();
-        n=evt.getY();
+        m = evt.getX();
+        n = evt.getY();
     }//GEN-LAST:event_panelMainMousePressed
 
     private void panelMainMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMainMouseDragged
-        int x=evt.getXOnScreen();
-        int y=evt.getYOnScreen();
-        this.setLocation(x-m, y-n);
+        int x = evt.getXOnScreen();
+        int y = evt.getYOnScreen();
+        this.setLocation(x - m, y - n);
     }//GEN-LAST:event_panelMainMouseDragged
-   private int m,n;
+    private int m, n;
+
     /**
      * @param args the command line arguments
      */

@@ -10,6 +10,7 @@ package client.view;
  * @author cuongnv
  */
 public class Home extends javax.swing.JFrame {
+
     /**
      * Creates new form Home
      */
@@ -18,7 +19,8 @@ public class Home extends javax.swing.JFrame {
         this.setVisible(true);
         this.labell.setText(s);
     }
-    public void setLabel(String h){
+
+    public void setLabel(String h) {
         this.labell.setText(h);
     }
 
@@ -60,7 +62,6 @@ public class Home extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel labell;

@@ -51,18 +51,21 @@ public class QuestionsForm extends javax.swing.JFrame {
     private int cur;
     private int Time;
     private JComponent custompanel;
+
     public QuestionsForm() {
         initComponents();
         initCustom();
         setLocationRelativeTo(null);
     }
+
     public void setBtnNext(String s) {
         this.btnNext.setText(s);
     }
+
     public void initCustom() {
-        
-        custompanel = new customPanelNext(230, 103,"icon_next_blue.png");
-       
+
+        custompanel = new customPanelNext(230, 103, "icon_next_blue.png");
+
         btnNext = new JLabel();
         btnNext.setName("next");
         btnExit.setName("exit");
@@ -70,20 +73,20 @@ public class QuestionsForm extends javax.swing.JFrame {
         btnNext.setForeground(new java.awt.Color(254, 254, 254));
         btnNext.setText("Câu tiếp");
         btnNext.setLocation(nextX - 35, nextY - 10);
-        
-        btnExit.setLocation(panelListAns.getX() ,nextY-10);
-        btnExit.setSize(121,103);
-        btnExit.setPreferredSize(new Dimension(121,103));
+
+        btnExit.setLocation(panelListAns.getX(), nextY - 10);
+        btnExit.setSize(121, 103);
+        btnExit.setPreferredSize(new Dimension(121, 103));
         panelNext.setLocation(nextX - 35, nextY - 10);
         panelNext.setSize(230, 103);
         panelNext.setBackground(new Color(0, 0, 0, 0));
         panelNext.setPreferredSize(new Dimension(230, 103));
         panelNext.add(custompanel);
-        panelExit.setLocation(panelListAns.getX() ,nextY-10);
-        
-        panelExit.setSize(121,103);
-        panelExit.setPreferredSize(new Dimension(121,103));
-        panelExit.setBackground(new Color(0,0,0,0));
+        panelExit.setLocation(panelListAns.getX(), nextY - 10);
+
+        panelExit.setSize(121, 103);
+        panelExit.setPreferredSize(new Dimension(121, 103));
+        panelExit.setBackground(new Color(0, 0, 0, 0));
         panelExit.add(new customPanelNext(121, 103, "icon_exit.png"));
         btnNext.setSize(230, 103);
         btnNext.setPreferredSize(new Dimension(230, 103));
@@ -91,8 +94,8 @@ public class QuestionsForm extends javax.swing.JFrame {
         btnNext.setVerticalAlignment(JLabel.CENTER);
         btnNext.setHorizontalTextPosition(JLabel.CENTER);
         panelMain.add(panelNext, 0, 0);
-        panelMain.add(panelExit,0,0);
-        panelMain.add(btnExit,1,0);
+        panelMain.add(panelExit, 0, 0);
+        panelMain.add(btnExit, 1, 0);
         panelMain.add(btnNext, 1, 0);
         btnExit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnNext.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -135,16 +138,21 @@ public class QuestionsForm extends javax.swing.JFrame {
         }
         System.out.println(panelListAns.getWidth() + " " + panelListAns.getHeight());
     }
+
     public void submitAns() {
 
     }
+
     public void addActionListentBtnNextOrExit(MouseListener listener) {
         this.btnNext.addMouseListener(listener);
         this.btnExit.addMouseListener(listener);
     }
+
     class customPanelNext extends JComponent {
+
         private int w, h;
         private String srcImg;
+
         public customPanelNext(int w, int h, String src) {
             this.w = w;
             this.h = h;
@@ -152,16 +160,20 @@ public class QuestionsForm extends javax.swing.JFrame {
             this.setSize(w, h);
             this.setPreferredSize(new Dimension(w, h));
         }
+
         public void paint(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
-            Image img = new ImageIcon(getClass().getResource("/Res/"+srcImg)).getImage();
+            Image img = new ImageIcon(getClass().getResource("/Res/" + srcImg)).getImage();
             g2d.drawImage(img, 0, 0, null);
         }
     }
+
     class PanelCustom extends JPanel {
+
         private String img;
         private Image image;
         private int width, height;
+
         public PanelCustom(String img) {
             this.img = img;
             image = new ImageIcon(getClass().getResource("/Res/" + img)).getImage();
@@ -173,35 +185,42 @@ public class QuestionsForm extends javax.swing.JFrame {
             setMaximumSize(size);
             this.setLayout(null);
         }
+
         protected void paintComponent(Graphics g) {
             //Graphics2D g2d = (Graphics2D) g;
             g.drawImage(image, 0, 0, this);
         }
     }
-    public void setBtnSubmit(){
+
+    public void setBtnSubmit() {
         this.panelNext.remove(this.custompanel);
         this.panelNext.revalidate();
         this.panelNext.repaint();
-        this.panelNext.add(new customPanelNext(230, 102,"icon_submit.png"));
+        this.panelNext.add(new customPanelNext(230, 102, "icon_submit.png"));
         this.panelNext.revalidate();
         this.panelNext.repaint();
         this.btnNext.setText("Nộp bài");
         this.btnNext.revalidate();
         this.btnNext.repaint();
-        
+
     }
+
     public int[] getAns() {
         return this.myAns;
     }
+
     class componentLabel extends JComponent {
+
         private int w;
         private int h;
+
         public componentLabel(int w, int h) {
             this.w = w;
             this.h = h;
             this.setPreferredSize(new Dimension(w, h));
             this.setSize(w, h);
         }
+
         public void paint(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
             g2d.setColor(new Color(89, 91, 131, 150));
@@ -211,9 +230,12 @@ public class QuestionsForm extends javax.swing.JFrame {
             Font font = new Font(Font.SANS_SERIF, Font.BOLD, 30);
         }
     }
+
     class Tick extends JComponent {
+
         private Image image;
         private int w, h;
+
         public Tick(String img, int w, int h) {
             image = new ImageIcon(getClass().getResource("/Res/" + img)).getImage();
             this.w = w;
@@ -221,6 +243,7 @@ public class QuestionsForm extends javax.swing.JFrame {
             this.setSize(w, h);
             this.setPreferredSize(new Dimension(w, h));
         }
+
         public void paint(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
             g2d.drawImage(image, 20, 20, this);
@@ -237,6 +260,7 @@ public class QuestionsForm extends javax.swing.JFrame {
             }
         }
     }
+
     public void showQuestionI(Question q, int cur) {
         this.cur = cur;
         question.setText(q.getQuestion());
@@ -252,7 +276,8 @@ public class QuestionsForm extends javax.swing.JFrame {
             btnAns[idx].repaint();
         }
     }
-    public void setNumAns(int i){
+
+    public void setNumAns(int i) {
         this.labelNumAns.setText(String.valueOf(i));
     }
 
@@ -303,6 +328,7 @@ public class QuestionsForm extends javax.swing.JFrame {
             //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         }
     }
+
     public void setTime(int t) {
         if (t < 10) {
             this.timer.setForeground(Color.red);
@@ -311,6 +337,7 @@ public class QuestionsForm extends javax.swing.JFrame {
         }
         this.timer.setText(String.valueOf(t));
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

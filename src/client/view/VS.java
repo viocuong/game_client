@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+
 /**
  *
  * @author cuongnv
@@ -25,6 +26,7 @@ public class VS extends javax.swing.JFrame {
         labelUser2.setText(user2);
         setLocationRelativeTo(null);
     }
+
     class panelCustom extends JPanel {
 
         private String img;
@@ -41,7 +43,6 @@ public class VS extends javax.swing.JFrame {
             setMinimumSize(size);
             setMaximumSize(size);
             this.setLayout(null);
-           
 
         }
 

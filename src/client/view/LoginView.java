@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package client.view;
+
 import Models.com.*;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -30,32 +31,39 @@ public class LoginView extends javax.swing.JFrame {
         customInit();
         setLocationRelativeTo(null);
     }
-    public void customInit(){
+
+    public void customInit() {
         btnLogin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         btnMinimize.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
-    public void showMessage(String str){
+
+    public void showMessage(String str) {
         JOptionPane.showMessageDialog(this, str);
     }
-    public User getUser(){
+
+    public User getUser() {
         return new User(txtUserName.getText(), txtPassWord.getText());
     }
-    public void addListentBtnLogin(ActionListener l){
+
+    public void addListentBtnLogin(ActionListener l) {
         btnLogin.addActionListener(l);
     }
-    class JPannerGradient extends JPanel{
-        protected void paintComponent(Graphics g){
+
+    class JPannerGradient extends JPanel {
+
+        protected void paintComponent(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
             int width = this.getWidth();
             int height = this.getHeight();
-            Color cl1 = new Color(112,225,245);
-            Color cl2 = new Color(225,209,148);
+            Color cl1 = new Color(112, 225, 245);
+            Color cl2 = new Color(225, 209, 148);
             GradientPaint gp = new GradientPaint(0, 0, cl1, 180, height, cl2);
             g2d.setPaint(gp);
             g2d.fillRect(0, 0, width, height);
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -207,7 +215,7 @@ public class LoginView extends javax.swing.JFrame {
 
     private void btnCloseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCloseMouseClicked
         // TODO add your handling code here:
-        if(JOptionPane.showConfirmDialog(null,"Bạn có chắc chắn muốn thoát game cực hay này","Yes",JOptionPane.YES_NO_OPTION)==0){
+        if (JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn thoát game cực hay này", "Yes", JOptionPane.YES_NO_OPTION) == 0) {
             this.dispose();
         }
     }//GEN-LAST:event_btnCloseMouseClicked
