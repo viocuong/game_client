@@ -202,18 +202,13 @@ public class QuestionsForm extends javax.swing.JFrame {
         this.btnNext.setText("Nộp bài");
         this.btnNext.revalidate();
         this.btnNext.repaint();
-
     }
-
     public int[] getAns() {
         return this.myAns;
     }
-
     class componentLabel extends JComponent {
-
         private int w;
         private int h;
-
         public componentLabel(int w, int h) {
             this.w = w;
             this.h = h;
@@ -230,9 +225,7 @@ public class QuestionsForm extends javax.swing.JFrame {
             Font font = new Font(Font.SANS_SERIF, Font.BOLD, 30);
         }
     }
-
     class Tick extends JComponent {
-
         private Image image;
         private int w, h;
 
@@ -305,7 +298,7 @@ public class QuestionsForm extends javax.swing.JFrame {
             btnAns[i].repaint();
 
             resetTick(i);
-            JOptionPane.showMessageDialog(panelMain, myAns[cur]);
+            //JOptionPane.showMessageDialog(panelMain, myAns[cur]);
         }
 
         @Override

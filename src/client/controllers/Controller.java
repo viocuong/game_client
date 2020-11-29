@@ -209,6 +209,7 @@ public class Controller implements Runnable {
 
                 questionF.setTime(time.time);
                 if (time.time == 0) {
+                    questionF.dispose();
                     submitAns(questionF, u, 30 - time.time, listQuestion);
                 }
             }
