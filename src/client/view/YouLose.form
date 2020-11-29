@@ -39,6 +39,10 @@
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JPanel" name="panelMain">
+      <Events>
+        <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="panelMainMouseDragged"/>
+        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="panelMainMousePressed"/>
+      </Events>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -52,8 +56,8 @@
               </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="labelDetail" min="-2" pref="204" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="138" max="-2" attributes="0"/>
+                  <Component id="labelDetail" min="-2" pref="224" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="130" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

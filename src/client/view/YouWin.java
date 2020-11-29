@@ -112,6 +112,16 @@ public class YouWin extends javax.swing.JFrame {
         setResizable(false);
 
         panelMain.setForeground(new java.awt.Color(255, 0, 0));
+        panelMain.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                panelMainMouseDragged(evt);
+            }
+        });
+        panelMain.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelMainMousePressed(evt);
+            }
+        });
 
         labelDetail.setFont(new java.awt.Font("Sarai", 1, 36)); // NOI18N
         labelDetail.setForeground(new java.awt.Color(254, 0, 62));
@@ -188,6 +198,17 @@ public class YouWin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void panelMainMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMainMousePressed
+        m=evt.getX();
+        n=evt.getY();
+    }//GEN-LAST:event_panelMainMousePressed
+
+    private void panelMainMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMainMouseDragged
+        int x=evt.getXOnScreen();
+        int y=evt.getYOnScreen();
+        this.setLocation(x-m, y-n);
+    }//GEN-LAST:event_panelMainMouseDragged
+    private int m,n;
     /**
      * @param args the command line arguments
      */

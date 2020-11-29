@@ -113,6 +113,17 @@ public class YouLose extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(451, 500));
         setResizable(false);
 
+        panelMain.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                panelMainMouseDragged(evt);
+            }
+        });
+        panelMain.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                panelMainMousePressed(evt);
+            }
+        });
+
         panelBtnRematch.setPreferredSize(new java.awt.Dimension(200, 77));
 
         javax.swing.GroupLayout panelBtnRematchLayout = new javax.swing.GroupLayout(panelBtnRematch);
@@ -155,8 +166,8 @@ public class YouLose extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMainLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(labelDetail, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(138, 138, 138))
+                .addComponent(labelDetail, javax.swing.GroupLayout.PREFERRED_SIZE, 224, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(130, 130, 130))
         );
         panelMainLayout.setVerticalGroup(
             panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,6 +195,17 @@ public class YouLose extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void panelMainMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMainMousePressed
+        m=evt.getX();
+        n=evt.getY();
+    }//GEN-LAST:event_panelMainMousePressed
+
+    private void panelMainMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMainMouseDragged
+        int x=evt.getXOnScreen();
+        int y=evt.getYOnScreen();
+        this.setLocation(x-m, y-n);
+    }//GEN-LAST:event_panelMainMouseDragged
+   private int m,n;
     /**
      * @param args the command line arguments
      */
