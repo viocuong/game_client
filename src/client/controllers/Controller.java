@@ -112,15 +112,27 @@ public class Controller implements Runnable {
         if (result.getIsEquals()) {
             showMessage("Bạn đã hòa với " + result.getCompetitor().getUserName(), "equalsGame", result.getCompetitor().getIp());
         } else if (result.getIsWin()) {
-            YouWin yw = new YouWin();
-            yw.setVisible(true);
-            yw.setDetail(result.getNumCorrect() + "/10    " + result.getTime() + "s");
-            yw.addListenBtnExitAndRematch(new ListenRematchAndExit(result.getCompetitor(), yw));
+            try {
+                YouWin yw = new YouWin();
+                yw.setVisible(true);
+                yw.setDetail(result.getNumCorrect() + "/10    " + result.getTime() + "s");
+                yw.addListenBtnExitAndRematch(new ListenRematchAndExit(result.getCompetitor(), yw));
+                Thread.sleep(5000);
+                yw.dispose();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
-            YouLose yl = new YouLose();
-            yl.setVisible(true);
-            yl.setDetail(result.getNumCorrect() + "/10    " + result.getTime() + "s");
-            yl.addListenBtnExitAndRematch(new ListenRematchAndExit(result.getCompetitor(), yl));
+            try {
+                YouLose yl = new YouLose();
+                yl.setVisible(true);
+                yl.setDetail(result.getNumCorrect() + "/10    " + result.getTime() + "s");
+                yl.addListenBtnExitAndRematch(new ListenRematchAndExit(result.getCompetitor(), yl));
+                Thread.sleep(5000);
+                yl.dispose();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     public class ListenRematchAndExit implements MouseListener {
@@ -343,7 +355,7 @@ public class Controller implements Runnable {
 
             while (true) {
                 try {
-                    sleep(4000);
+                    sleep(1000);
                     getUserOnline();
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
