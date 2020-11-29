@@ -56,6 +56,7 @@ public class Controller implements Runnable {
         loginView = new LoginView();
         loginView.setVisible(true);
         loginView.addListentBtnLogin(new listentBtnLogin());
+        loginView.addMouseListener(new ListBtnRank());
         openConnection(serverHost, serverPort);
         Thread threadUpdate = new Thread(new updatePlayerOnline());
         threadUpdate.setDaemon(true);
@@ -65,7 +66,25 @@ public class Controller implements Runnable {
     public synchronized Map<String, Pair<User, Integer>> getlistPlayer() {
         return this.listPlayer;
     }
+    
+    class ListBtnRank implements MouseListener{
 
+        @Override
+        public void mouseClicked(MouseEvent me) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            
+        }
+
+        @Override
+        public void mousePressed(MouseEvent me) {}
+        @Override
+        public void mouseReleased(MouseEvent me) {}
+        @Override
+        public void mouseEntered(MouseEvent me) {}
+        @Override
+        public void mouseExited(MouseEvent me) {}
+        
+    }
     public void run() {
         while (true) {
             try {

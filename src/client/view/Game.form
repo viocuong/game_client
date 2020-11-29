@@ -67,22 +67,23 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="labelRank" min="-2" pref="105" max="-2" attributes="0"/>
                       </Group>
+                      <Component id="btnRank" alignment="0" min="-2" pref="64" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="182" max="-2" attributes="0"/>
                           <Component id="jPanelListPlayer" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="0" pref="401" max="32767" attributes="0"/>
+                          <EmptySpace pref="305" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="166" max="-2" attributes="0"/>
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="289" max="32767" attributes="0"/>
-                          <Component id="btnMinimize" min="-2" pref="44" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btnClose" min="-2" pref="46" max="-2" attributes="0"/>
+                          <EmptySpace min="47" pref="289" max="32767" attributes="0"/>
                       </Group>
                   </Group>
+                  <Component id="btnMinimize" min="-2" pref="44" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="btnClose" min="-2" pref="46" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -96,11 +97,14 @@
                   <EmptySpace min="-2" pref="646" max="-2" attributes="0"/>
               </Group>
               <Group type="102" attributes="0">
-                  <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" alignment="1" groupAlignment="3" attributes="0">
-                          <Component id="labelAccount" alignment="3" min="-2" pref="53" max="-2" attributes="0"/>
-                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="labelAccount" alignment="3" min="-2" pref="53" max="-2" attributes="0"/>
+                              <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -116,6 +120,8 @@
                               <Component id="labelRanking" min="-2" pref="38" max="-2" attributes="0"/>
                               <Component id="labelRank" max="32767" attributes="0"/>
                           </Group>
+                          <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                          <Component id="btnRank" min="-2" pref="88" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                       <Component id="jPanelListPlayer" max="32767" attributes="0"/>
@@ -227,6 +233,17 @@
               <Color blue="fe" green="fe" red="fe" type="rgb"/>
             </Property>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="btnRank">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Res/cup.png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="    "/>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="btnRank.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
