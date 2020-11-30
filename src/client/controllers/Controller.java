@@ -23,7 +23,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import static java.lang.Thread.sleep;
+import java.net.Authenticator;
 import java.net.DatagramSocket;
+import java.rmi.AccessException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +37,11 @@ import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import java.rmi.registry.Registry;
+import java.rmi.registry.LocateRegistry;
+import java.util.Collections;
+import java.util.Comparator;
+
 
 /**
  *
@@ -42,6 +51,8 @@ public class Controller implements Runnable {
 
     private Socket socketClient;
     private String serverHost = "localhost";
+    private String serverRmiHost = "localhost";
+    private int rmiPort = 8889;
     private Connection con;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
@@ -51,40 +62,103 @@ public class Controller implements Runnable {
     private Map<String, Pair<User, Integer>> listPlayer = new HashMap<>();
     private User myAccount;
     private int cur = 0;
+    private ArrayList<User> listRank ;
+    private RMIinterface rmiServer;
+    private String rmiservice = "rmi";
+    private Registry registry;
 
     public Controller() {
+        //            registry = LocateRegistry.getRegistry(serverRmiHost, rmiPort);
+//            rmiServer = (RMIinterface) (registry.lookup(rmiservice));
         loginView = new LoginView();
         loginView.setVisible(true);
         loginView.addListentBtnLogin(new listentBtnLogin());
-        loginView.addMouseListener(new ListBtnRank());
         openConnection(serverHost, serverPort);
         Thread threadUpdate = new Thread(new updatePlayerOnline());
         threadUpdate.setDaemon(true);
         threadUpdate.start();
+
     }
 
     public synchronized Map<String, Pair<User, Integer>> getlistPlayer() {
         return this.listPlayer;
     }
+
+    class byScore implements Comparator<User> {
+
+        @Override
+        public int compare(User t, User t1) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            if (t.getScore() < t1.getScore()) {
+                return -1;
+            }
+            if (t.getScore() > t1.getScore()) {
+                return 1;
+            }
+            return 0;
+        }
+
+    }
+
+    class byAverageTimeWin implements Comparator<User> {
+
+        @Override
+        public int compare(User t, User t1) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            if (t.getAverageTimeWin() < t1.getAverageTimeWin()) {
+                return -1;
+            }
+            if (t.getAverageTimeWin() > t1.getAverageTimeWin()) {
+                return 1;
+            }
+            return 0;
+        }
+    }
+
+    class byAverageCompetitor implements Comparator<User> {
+
+        @Override
+        public int compare(User t, User t1) {
+            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            if (t.getAverageCompetitor() < t1.getAverageCompetitor()) {
+                return 1;
+            }
+            if (t.getAverageCompetitor() > t1.getAverageCompetitor()) {
+                return -1;
+            }
+            return 0;
+        }
+    }
+
     
-    class ListBtnRank implements MouseListener{
+
+    class ListenBtnRank implements MouseListener {
 
         @Override
         public void mouseClicked(MouseEvent me) {
-            //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            Request req = new Request("getRank");
+            send(req);
             
         }
 
         @Override
-        public void mousePressed(MouseEvent me) {}
+        public void mousePressed(MouseEvent me) {
+        }
+
         @Override
-        public void mouseReleased(MouseEvent me) {}
+        public void mouseReleased(MouseEvent me) {
+        }
+
         @Override
-        public void mouseEntered(MouseEvent me) {}
+        public void mouseEntered(MouseEvent me) {
+        }
+
         @Override
-        public void mouseExited(MouseEvent me) {}
-        
+        public void mouseExited(MouseEvent me) {
+        }
+
     }
+
     public void run() {
         while (true) {
             try {
@@ -118,6 +192,9 @@ public class Controller implements Runnable {
                     case "result":
                         showResult(respond);
                         break;
+                    case "sendRank":
+                        showRank(respond);
+                        break;
                 }
             } catch (IOException ex) {
                 //Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
@@ -125,6 +202,60 @@ public class Controller implements Runnable {
                 Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    public void showRank(Request res){
+        listRank = (ArrayList<User>) res.getObject();
+        //System.out.println(listRank.size());
+        Rank rank = new Rank();
+        rank.addListenBtn(new ListenBtnRankBy(rank));
+        rank.setVisible(true);
+        showRankScore(rank);
+    }
+    public void showRankScore(Rank rank) {
+        ArrayList<Pair<String, String>> ans  = new ArrayList<>();
+        Collections.sort(listRank, new byScore());
+        for(User u : listRank){
+           ans.add(new Pair(u.getUserName(),String.valueOf(u.getScore())));
+        }
+        rank.show(ans);
+    }
+    public void showRankTimeWin(Rank rank){
+        ArrayList<Pair<String, String>> ans  = new ArrayList<>();
+        Collections.sort(listRank, new byAverageTimeWin());
+        for(User u : listRank){
+           ans.add(new Pair(u.getUserName(),String.valueOf(u.getAverageTimeWin())));
+        }
+        rank.show(ans);
+    }
+    public void showRankCompetitor(Rank rank){
+        ArrayList<Pair<String, String>> ans  = new ArrayList<>();
+        Collections.sort(listRank, new byAverageCompetitor());
+        for(User u : listRank){
+           ans.add(new Pair(u.getUserName(),String.valueOf(u.getAverageCompetitor())));
+        }
+        rank.show(ans);
+    }
+    public class ListenBtnRankBy implements ActionListener{
+        private Rank rank;
+        public ListenBtnRankBy(Rank rank){
+            this.rank =rank;
+        }
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            
+            JButton btn = (JButton) ae.getSource();
+            if(btn.getName().equals("score")){
+                //System.out.println("score");
+                showRankScore(this.rank);
+            }
+            else if(btn.getName().equals("timewin")){
+                showRankTimeWin(rank);
+            }
+            else{
+                showRankCompetitor(rank);
+            }
+        }
+        
     }
     public void showResult(Request res) {
         Result result = (Result) res.getObject();
@@ -154,6 +285,7 @@ public class Controller implements Runnable {
             }
         }
     }
+
     public class ListenRematchAndExit implements MouseListener {
 
         private User competitor;
@@ -163,6 +295,7 @@ public class Controller implements Runnable {
             this.frame = frame;
             this.competitor = competitor;
         }
+
         @Override
         public void mouseClicked(MouseEvent me) {
             JLabel btn = (JLabel) me.getComponent();
@@ -344,6 +477,7 @@ public class Controller implements Runnable {
                 loginView.dispose();
                 game = new Game();
                 game.setActionListener(new ListentBtnPlayer());
+                game.addListenBtnRank(new ListenBtnRank());
                 game.showMyAccount(myAccount);
                 getUserOnline();
             } else {

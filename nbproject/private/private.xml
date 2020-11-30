@@ -3,17 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/home/cuongnv/projects/gameclient/src/client/view/Game.java</file>
+            <file>file:/home/cuongnv/projects/gameclient/src/client/controllers/Controller.java</file>
+            <file>file:/home/cuongnv/projects/gameclient/nbproject/build-impl.xml</file>
+            <file>file:/home/cuongnv/projects/gameclient/src/client/view/Home.java</file>
+            <file>file:/home/cuongnv/projects/gameclient/src/client/view/MessageDialog.java</file>
+            <file>file:/home/cuongnv/projects/gameclient/src/client/view/LoginView.java</file>
+            <file>file:/home/cuongnv/projects/gameclient/src/client/view/Ranking.java</file>
             <file>file:/home/cuongnv/projects/gameclient/src/client/view/YouLose.java</file>
             <file>file:/home/cuongnv/projects/gameclient/src/client/view/QuestionsForm.java</file>
             <file>file:/home/cuongnv/projects/gameclient/src/Res/background_Japan.gif</file>
             <file>file:/home/cuongnv/projects/gameclient/src/client/clientRun.java</file>
-            <file>file:/home/cuongnv/projects/gameclient/src/client/view/Game.java</file>
-            <file>file:/home/cuongnv/projects/gameclient/src/client/controllers/Controller.java</file>
-            <file>file:/home/cuongnv/projects/gameclient/nbproject/build-impl.xml</file>
             <file>file:/home/cuongnv/projects/gameclient/src/client/view/VS.java</file>
             <file>file:/home/cuongnv/projects/gameclient/src/client/view/YouWin.java</file>
-            <file>file:/home/cuongnv/projects/gameclient/src/client/view/MessageDialog.java</file>
-            <file>file:/home/cuongnv/projects/gameclient/src/client/view/LoginView.java</file>
         </group>
     </open-files>
 </project-private>

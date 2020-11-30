@@ -73,14 +73,13 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="182" max="-2" attributes="0"/>
                           <Component id="jPanelListPlayer" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="305" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="166" max="-2" attributes="0"/>
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="47" pref="289" max="32767" attributes="0"/>
                       </Group>
                   </Group>
+                  <EmptySpace pref="289" max="32767" attributes="0"/>
                   <Component id="btnMinimize" min="-2" pref="44" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnClose" min="-2" pref="46" max="-2" attributes="0"/>

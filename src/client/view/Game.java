@@ -66,8 +66,6 @@ public class Game extends javax.swing.JFrame {
     }
     public void initJpanelPlayers(){
         int w = jPanelGame.getWidth(), h =jPanelGame.getHeight();
-        
-        
         //jPanelListPlayer = new JPanel();
         jPanelListPlayer.setBounds(w/3, 50, w/3,600 );
         jPanelListPlayer.setBackground(new Color(52, 30, 69,90));
@@ -77,9 +75,8 @@ public class Game extends javax.swing.JFrame {
         jPanelListPlayer.setLayout(gl);
         jPanelListPlayer.setSize(430,500);
         jPanelListPlayer.setPreferredSize(new Dimension(430,500));
-        //jPanelGame.add(jPanelListPlayer);
     }
-    public void addListBtnRank(MouseListener m){
+    public void addListenBtnRank(MouseListener m){
         btnRank.addMouseListener(m);
     }
     class componentBtnPlayer extends JComponent{
