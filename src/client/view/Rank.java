@@ -38,11 +38,13 @@ public class Rank extends javax.swing.JFrame implements MouseListener {
     /**
      * Creates new form Ranking
      */
-    private int p=0, n=0 ,idx =1;
+    private int p = 0, n = 0, idx = 1;
     private JPanel[] panelr = new JPanel[5];
     private JLabel[] ranki = new JLabel[5];
     private JLabel[] th = new JLabel[5];
-    private ArrayList<Pair<String , String>> datas ;
+    private ArrayList<Pair<String, String>> datas;
+    private boolean isNext = true, isPrivious = false;
+
     public Rank() {
         initComponents();
         customComponent();
@@ -50,20 +52,20 @@ public class Rank extends javax.swing.JFrame implements MouseListener {
         btnNext.addMouseListener(this);
         btnPrevious.addMouseListener(this);
     }
-    
+
     public void customComponent() {
         btnCompetitor.setName("competitor");
         btnScore.setName("score");
         btnTimeWin.setName("timewin");
-        btnCompetitor.setBackground(new Color(0,0,0,0));
-        btnTimeWin.setBackground(new Color(0,0,0,0));
-        btnScore.setBackground(new Color(0,0,0,0));
+        btnCompetitor.setBackground(new Color(0, 0, 0, 0));
+        btnTimeWin.setBackground(new Color(0, 0, 0, 0));
+        btnScore.setBackground(new Color(0, 0, 0, 0));
         btnNext.setName("next");
         btnPrevious.setName("previous");
         this.setBackground(new Color(0, 0, 0, 0));
         panelMain.add(new panelCustom("leaderboard.png"));
-        panelMain.setBackground(new Color(0,0,0,0));
-        
+        panelMain.setBackground(new Color(0, 0, 0, 0));
+
         btnCompetitor.setBorder(null);
         btnCompetitor.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
@@ -77,56 +79,57 @@ public class Rank extends javax.swing.JFrame implements MouseListener {
             }
         });
         btnScore.setBorder(null);
-        btnScore.addMouseListener(new MouseAdapter(){
-                public void mouseEntered(MouseEvent e){
-                    btnScore.setBackground(new Color(0, 0, 0,0));
-                    btnScore.setBorder(null);
-                }
-                public void mouseExited(MouseEvent e){
-                    btnScore.setBackground(new Color(0, 0, 0,0));
-                    btnScore.setBorder(null);
-                }
-            });
+        btnScore.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                btnScore.setBackground(new Color(0, 0, 0, 0));
+                btnScore.setBorder(null);
+            }
+
+            public void mouseExited(MouseEvent e) {
+                btnScore.setBackground(new Color(0, 0, 0, 0));
+                btnScore.setBorder(null);
+            }
+        });
         btnTimeWin.setBorder(null);
-        btnTimeWin.addMouseListener(new MouseAdapter(){
-                public void mouseEntered(MouseEvent e){
-                    btnTimeWin.setBackground(new Color(0, 0, 0,0));
-                    btnTimeWin.setBorder(null);
-                }
-                public void mouseExited(MouseEvent e){
-                    btnTimeWin.setBackground(new Color(0, 0, 0,0));
-                    btnTimeWin.setBorder(null);
-                }
-                
-            });
+        btnTimeWin.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                btnTimeWin.setBackground(new Color(0, 0, 0, 0));
+                btnTimeWin.setBorder(null);
+            }
+
+            public void mouseExited(MouseEvent e) {
+                btnTimeWin.setBackground(new Color(0, 0, 0, 0));
+                btnTimeWin.setBorder(null);
+            }
+
+        });
         initPanel();
         //add(panelScroll);
 
     }
-    public void addListenBtn(ActionListener l){
+
+    public void addListenBtn(ActionListener l) {
         btnCompetitor.addActionListener(l);
         btnTimeWin.addActionListener(l);
         btnScore.addActionListener(l);
     }
-    
-    public void initPanel(){
-        Font font = new Font(Font.SANS_SERIF, Font.ITALIC, 20);
-        Color fontColor = new Color(254,254,254);
-        
-        int y = 80;
-        for(int i = 0;i<5;i++){
-            panelr[i] = new JPanel();
-            panelr[i].setSize(410,55);
-            panelr[i].setPreferredSize(new Dimension(410,55));
-            panelr[i].setLocation(102,y);
-            panelr[i].add(new customPanelRank("rankth.png", "1", "", ""));
-            panelr[i].setBackground(new Color(0,0,0,0));
-          
-            
 
-            panelMain.add(panelr[i],3,0);
-            
-            y+=55;
+    public void initPanel() {
+        Font font = new Font(Font.SANS_SERIF, Font.ITALIC, 20);
+        Color fontColor = new Color(254, 254, 254);
+
+        int y = 80;
+        for (int i = 0; i < 5; i++) {
+            panelr[i] = new JPanel();
+            panelr[i].setSize(410, 55);
+            panelr[i].setPreferredSize(new Dimension(410, 55));
+            panelr[i].setLocation(102, y);
+            panelr[i].add(new customPanelRank("rankth.png", "1", "", ""));
+            panelr[i].setBackground(new Color(0, 0, 0, 0));
+
+            panelMain.add(panelr[i], 3, 0);
+
+            y += 55;
         }
     }
 
@@ -134,15 +137,46 @@ public class Rank extends javax.swing.JFrame implements MouseListener {
     public void mouseClicked(MouseEvent me) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         JLabel btn = (JLabel) me.getComponent();
-        if(btn.getName().equals("next")){
-            idx= n;
-            showDetailRank(p, n+5);
-        }
-        else {
-            n-=5;
-            p-=5;
-            idx-=4;
-            if(p>=0 && n>=0) showDetailRank(p, n);
+        if (btn.getName().equals("next")) {
+            if (isNext) {
+                isPrivious = true;
+                idx = n;
+                p = n;
+                int tmp = n;
+                int kt = 0;
+                if (n + 5 > datas.size()) {
+                    n = datas.size();
+                    kt = 1;
+                    isNext = false;
+                } else {
+                    n += 5;
+                }
+                showDetailRank(p, n);
+                if (kt == 1) {
+                    p -= 5;
+                    n = tmp;
+                }
+            }
+
+        } else {
+            if(isPrivious){
+                
+                isNext = true;
+                if (p >= 5 && n >= 5) {
+                    n = p;
+                    p -= 5;
+                    idx -= 4;
+                    
+                }
+                if(p>=0 && n>=0){
+                    if(p == 0) idx = 0;
+                    showDetailRank(p, n);
+                }
+                
+                
+                    
+                
+            }
         }
     }
 
@@ -153,7 +187,7 @@ public class Rank extends javax.swing.JFrame implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent me) {
-       // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -165,36 +199,43 @@ public class Rank extends javax.swing.JFrame implements MouseListener {
     public void mouseExited(MouseEvent me) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    class customPanelRank extends  JComponent{
+
+    class customPanelRank extends JComponent {
+
         private int w, h;
-        private String s1,s2,s3;
-        private Image image;     
+        private String s1, s2, s3;
+        private Image image;
+
         public customPanelRank(String src, String s1, String s2, String s3) {
             image = new ImageIcon(getClass().getResource("/Res/" + src)).getImage();
             w = image.getWidth(this);
             h = image.getHeight(this);
             this.setSize(w, h);
-            
+
             this.setPreferredSize(new Dimension(w, h));
-            this.s1= s1;
+            this.s1 = s1;
             this.s2 = s2;
-            this.s3 =s3;
+            this.s3 = s3;
         }
+
         public void paint(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
             g2d.drawImage(this.image, 0, 0, null);
-            Font font = new Font(Font.SANS_SERIF,Font.ITALIC,20);
-            Color fontColor = new Color(254,254,254);
+            Font font = new Font(Font.SANS_SERIF, Font.ITALIC, 20);
+            Color fontColor = new Color(254, 254, 254);
             g2d.setColor(fontColor);
             g2d.setFont(font);
-            g2d.drawString(s1, 25 , 40);
-            g2d.drawString(s2,150,40);
+            g2d.drawString(s1, 25, 40);
+            g2d.drawString(s2, 150, 40);
             g2d.drawString(s3, 300, 40);
         }
     }
+
     class panelCustom extends JComponent {
+
         private int w, h;
-        private Image image;     
+        private Image image;
+
         public panelCustom(String src) {
             image = new ImageIcon(getClass().getResource("/Res/" + src)).getImage();
             w = image.getWidth(this);
@@ -202,21 +243,28 @@ public class Rank extends javax.swing.JFrame implements MouseListener {
             this.setSize(w, h);
             this.setPreferredSize(new Dimension(w, h));
         }
+
         public void paint(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
             g2d.drawImage(this.image, 0, 0, null);
         }
     }
-    public void show(ArrayList<Pair<String, String>> datas){
+
+    public void show(ArrayList<Pair<String, String>> datas) {
         this.datas = datas;
+        isNext = true;
+        isPrivious = false;
         idx = 1;
-        p=0;
-        n=0;
-        
-        int y = 80 , init = 0;
-        int page = datas.size()/5;
-        for(int i = 0;i<5;i++){
-            if(i>= datas.size()) break;
+        p = 0;
+
+        n = 5;
+
+        int y = 80, init = 0;
+        int page = datas.size() / 5;
+        for (int i = 0; i < n; i++) {
+            if (i >= datas.size()) {
+                break;
+            }
             //panelr[i] = new JPanel();
             //panelr[i].setSize(410,55);
             //panelr[i].setPreferredSize(new Dimension(410,55));
@@ -224,52 +272,60 @@ public class Rank extends javax.swing.JFrame implements MouseListener {
             panelr[i].removeAll();
             panelr[i].revalidate();
             panelr[i].repaint();
-            panelr[i].add(new customPanelRank("rankth.png",String.valueOf(idx), datas.get(i).getKey(), datas.get(i).getValue()));
+            panelr[i].add(new customPanelRank("rankth.png", String.valueOf(idx), datas.get(i).getKey(), datas.get(i).getValue()));
             panelr[i].revalidate();
             panelr[i].repaint();
-            y+=55;
-            n++;
+            y += 55;
+
             idx++;
-            if(i==4){
-                y=80; 
+            if (i == 4) {
+                y = 80;
             }
         }
         p = n;
     }
-    public void reset(){
-        for(int i = 0;i<5;i++){
-            
+
+    public void reset() {
+        for (int i = 0; i < 5; i++) {
+
             panelr[i].removeAll();
             panelr[i].revalidate();
             panelr[i].repaint();
-            
-            
         }
     }
-    public void showDetailRank(int l, int r){
+
+    public void showDetailRank(int l, int r) {
         int y = 80;
-        p=l;
-        n=r;
-        System.out.println(p+" "+l);
+
+        System.out.println(l + " " + r);
         System.out.println(datas.size());
-        int h =0;
+        int h = 0;
         reset();
-        for(int i = l;i<r;i++){
-            if(i >= datas.size()|| i<=0) break;
-            
-            panelr[h].add(new customPanelRank("rankth.png",String.valueOf(idx+1), datas.get(i).getKey(), datas.get(i).getValue()));
+        for (int i = l; i < r; i++) {
+            if (i >= datas.size() || i <0) {
+                break;
+            }
+            System.out.println(datas.get(i).getKey());
+            panelr[h].add(new customPanelRank("rankth.png", String.valueOf(idx + 1), datas.get(i).getKey(), datas.get(i).getValue()));
             panelr[h].revalidate();
             panelr[h].repaint();
-            y+=55;
+            y += 55;
             h++;
-            p++;
-            n++;
             idx++;
         }
-    }
-    
         
-    
+        if(r< l+5){
+           
+            for(int i = r; i<l+5;i++){
+                panelr[h].add(new customPanelRank("rankth.png", "", "", ""));
+                panelr[h].revalidate();
+                panelr[h].repaint();
+                h++;
+                y+=55;
+                
+            }
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

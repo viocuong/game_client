@@ -339,6 +339,7 @@ public class Controller implements Runnable {
     public void showQuestion(Request res) {
         try {
             //Đối thủ
+            cur = 0;
             User u = (User) res.getObject2();
             System.out.println(u.getUserName());
             VS vs = new VS(myAccount.getUserName(), u.getUserName());

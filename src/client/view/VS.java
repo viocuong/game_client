@@ -26,7 +26,6 @@ public class VS extends javax.swing.JFrame {
         labelUser2.setText(user2);
         setLocationRelativeTo(null);
     }
-
     class panelCustom extends JPanel {
 
         private String img;
