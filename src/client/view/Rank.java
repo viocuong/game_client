@@ -296,9 +296,6 @@ public class Rank extends javax.swing.JFrame implements MouseListener {
 
     public void showDetailRank(int l, int r) {
         int y = 80;
-
-        System.out.println(l + " " + r);
-        System.out.println(datas.size());
         int h = 0;
         reset();
         for (int i = l; i < r; i++) {
